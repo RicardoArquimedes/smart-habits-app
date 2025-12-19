@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { HabitsStore } from '../features/habits/store/habits.store';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  template: `
+    <h1>Smart Habits</h1>
+    <button (click)="add()">Add habit</button>
+    <p>Total: {{ store.totalHabits() }}</p>
+    <p>Completed: {{ store.completedHabits() }}</p>
+  `,
 })
 export class AppComponent {
-  title = 'smart-habits-app';
+  store = inject(HabitsStore);
+
+  add() {
+    this.store.addHabit('Drink water');
+  }
 }
