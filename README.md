@@ -1,59 +1,57 @@
-# SmartHabitsApp
+# Smart Habits 🧠✨
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+Smart Habits es una aplicación web moderna para gestionar hábitos diarios, construida con **Angular (standalone + signals)** y enfocada en **arquitectura limpia, accesibilidad y diseño adaptable (Light / Dark mode)**.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Features
 
-```bash
-ng serve
-```
+- ✅ Crear y completar hábitos
+- 📊 Estadísticas en tiempo real (Total, Completed, Pending, Progress)
+- 🔍 Filtros: All / Completed / Pending
+- 🌗 Light & Dark mode con persistencia
+- 💾 Persistencia en LocalStorage
+- ♿ Accesibilidad (ARIA, semantic HTML)
+- 🧱 Arquitectura escalable y desacoplada
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🧩 Tech Stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Angular 17+**
+  - Standalone components
+  - Signals
+- **TypeScript**
+- **CSS Variables (Design Tokens)**
+- **LocalStorage**
+- **Semantic HTML + ARIA**
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🗂️ Project Structure
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```txt
+src/
+├── app/
+│   ├── core/
+│   │   └── services/
+│   │       └── theme/
+│   │           └── theme.service.ts
+│   │
+│   ├── features/
+│   │   └── habits/
+│   │       ├── components/
+│   │       │   ├── habit-form/
+│   │       │   ├── habit-list/
+│   │       │   ├── habit-stats/
+│   │       │   └── habit-filters/
+│   │       ├── store/
+│   │       │   └── habits.store.ts
+│   │       └── models/
+│   │           └── habit.model.ts
+│   │
+│   ├── app.component.ts
+│   └── app.routes.ts
+│
+├── styles.css
+└── main.ts
