@@ -1,5 +1,23 @@
 .empty {
-  margin-top: 1rem;
+  margin-top: 2rem;
   text-align: center;
   color: #777;
+  font-style: italic;
+}
+
+
+:host {
+  display: block;
+  padding: 2rem 1rem;
+}
+
+.page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
 }

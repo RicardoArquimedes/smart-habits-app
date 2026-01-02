@@ -1,18 +1,21 @@
 .filters {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 button {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
-  background: #eee;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  background: white;
   cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 button.active {
   background: #1976d2;
-  color: #fff;
+  color: white;
+  border-color: #1976d2;
 }
