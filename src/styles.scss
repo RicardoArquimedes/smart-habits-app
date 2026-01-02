@@ -5,11 +5,12 @@
 
 body {
   margin: 0;
-  font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
-  color: #0f084b;
-  background-color: #f6f9fb;
-  line-height: 1.5;
+  font-family: 'DM Sans', system-ui, sans-serif;
+
+  background-color: var(--color-border);
+  color: var(--color-text-primary);
+
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 
@@ -21,4 +22,57 @@ body {
 h1,
 h2 {
   letter-spacing: -0.02em;
+}
+
+:root {
+  /* Backgrounds */
+  --color-border: #f8fafc;          // fondo general
+  --color-surface: #ffffff;     // cards / contenedores
+  --color-border: #e2e8f0;
+
+  /* Text */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+
+  /* Brand / Accent */
+  --color-primary: #2563eb;
+  --color-primary-soft: #e0edff;
+
+  /* Status */
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+   --shadow-card:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+html.dark {
+  /* Backgrounds */
+  --color-border: #0f172a;
+  --color-surface: #020617;
+  --color-border: #1e293b;
+
+  /* Text */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5f5;
+
+  /* Brand / Accent */
+  --color-primary: #60a5fa;
+  --color-primary-soft: #1e3a8a;
+
+  /* Status */
+  --color-success: #22c55e;
+  --color-danger: #f87171;
+   --shadow-card:
+    0 1px 2px rgba(255, 255, 255, 0.06),
+    0 8px 24px rgba(255, 255, 255, 0.08);
+}
+
+html.dark .habit-item {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+html:not(.dark) .habit-item {
+  border-color: var(--color-border);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
