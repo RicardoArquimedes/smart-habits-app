@@ -1,15 +1,18 @@
 import { Component, inject } from '@angular/core';
-import { HabitsStore } from '../features/habits/store/habits.store'
+import { HabitsStore } from '../features/habits/store/habits.store';
 import { HabitListComponent } from './features/habits/components/habit-list/habit-list.component';
+import { HabitFormComponent } from './features/habits/components/habit-form/habit-form.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HabitListComponent],
+  imports: [HabitFormComponent, HabitListComponent],
   template: `
     <h1>Smart Habits</h1>
 
-    <button (click)="add()">Add habit</button>
+    <app-habit-form
+      (createHabit)="store.addHabit($event)">
+    </app-habit-form>
 
     <app-habit-list
       [habits]="store.habits()"
@@ -19,8 +22,4 @@ import { HabitListComponent } from './features/habits/components/habit-list/habi
 })
 export class AppComponent {
   store = inject(HabitsStore);
-
-  add() {
-    this.store.addHabit('Drink water');
-  }
 }
