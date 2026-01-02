@@ -17,6 +17,18 @@
 </app-habit-filters>
 
 <app-habit-list
+  *ngIf="store.hasFilteredResults(); else emptyState"
   [habits]="store.filteredHabits()"
   (toggleHabit)="store.toggleHabit($event)">
 </app-habit-list>
+
+<ng-template #emptyState>
+  <p class="empty">
+    {{
+      store.hasHabits()
+        ? 'No habits match this filter.'
+        : 'You don’t have habits yet. Start by adding one ✨'
+    }}
+  </p>
+</ng-template>
+

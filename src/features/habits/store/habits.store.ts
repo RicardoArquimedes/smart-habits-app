@@ -14,6 +14,12 @@ export class HabitsStore {
   private readonly _filter = signal<HabitFilter>('all');
 
 readonly filter = computed(() => this._filter());
+readonly hasHabits = computed(() => this.totalHabits() > 0);
+
+readonly hasFilteredResults = computed(
+  () => this.filteredHabits().length > 0
+);
+
 
   // =========================
   // Estado principal (privado)

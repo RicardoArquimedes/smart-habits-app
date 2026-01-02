@@ -4,12 +4,13 @@ import { HabitListComponent } from '../../components/habit-list/habit-list.compo
 import { HabitsStore } from '../../../../../features/habits/store/habits.store';
 import { HabitStatsComponent } from '../../components/habit-stats/habit-stats.component';
 import { HabitFiltersComponent } from '../../components/habit-filters/habit-filters.component';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-habits-page',
   standalone: true,
-  imports: [HabitFormComponent, HabitListComponent, HabitStatsComponent, HabitFiltersComponent],
+  imports: [CommonModule, HabitFormComponent, HabitListComponent, HabitStatsComponent, HabitFiltersComponent],
   templateUrl: './habits-page.component.html',
   styleUrl: './habits-page.component.scss',
 })
