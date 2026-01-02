@@ -1,0 +1,22 @@
+<h1>Smart Habits</h1>
+
+<app-habit-form
+  (createHabit)="store.addHabit($event)">
+</app-habit-form>
+
+<app-habit-stats
+  [total]="store.totalHabits()"
+  [completed]="store.completedHabits()"
+  [pending]="store.pendingHabits()"
+  [progress]="store.progress()">
+</app-habit-stats>
+
+<app-habit-filters
+  [current]="store.filter()"
+  (change)="store.setFilter($event)">
+</app-habit-filters>
+
+<app-habit-list
+  [habits]="store.filteredHabits()"
+  (toggleHabit)="store.toggleHabit($event)">
+</app-habit-list>

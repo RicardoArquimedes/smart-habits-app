@@ -1,0 +1,19 @@
+<div class="filters">
+  <button
+    [class.active]="current === 'all'"
+    (click)="select('all')">
+    All
+  </button>
+
+  <button
+    [class.active]="current === 'completed'"
+    (click)="select('completed')">
+    Completed
+  </button>
+
+  <button
+    [class.active]="current === 'pending'"
+    (click)="select('pending')">
+    Pending
+  </button>
+</div>
