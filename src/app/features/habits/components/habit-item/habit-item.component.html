@@ -1,0 +1,9 @@
+<div class="habit-item">
+  <span [class.completed]="habit.completed">
+    {{ habit.title }}
+  </span>
+
+  <button (click)="onToggle()">
+    {{ habit.completed ? 'Undo' : 'Done' }}
+  </button>
+</div>

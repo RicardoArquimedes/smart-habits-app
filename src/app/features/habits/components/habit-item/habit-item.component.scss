@@ -1,0 +1,10 @@
+.habit-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
