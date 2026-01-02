@@ -18,7 +18,7 @@ Smart Habits es una aplicación web moderna para gestionar hábitos diarios, con
 
 ## 🧩 Tech Stack
 
-- **Angular 17+**
+- **Angular 19+**
   - Standalone components
   - Signals
 - **TypeScript**
