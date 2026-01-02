@@ -1,33 +1,64 @@
-
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: "DM Sans", system-ui, sans-serif;
 
   background-color: var(--color-border);
   color: var(--color-text-primary);
-
-  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: var(--font-md);
+  line-height: var(--lh-normal);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.theme-toggle {
+  font-size: 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 0.5rem;
+  border-radius: 50%;
+
+  color: var(--color-text-primary);
+
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-primary-soft);
+  }
+}
 
 :focus-visible {
   outline: 2px solid #1976d2;
   outline-offset: 2px;
 }
 
-h1,
+h1 {
+  font-size: var(--font-xl);
+  line-height: var(--lh-tight);
+}
+
 h2 {
-  letter-spacing: -0.02em;
+  font-size: var(--font-lg);
+  line-height: var(--lh-tight);
 }
 
 :root {
   /* Backgrounds */
-  --color-border: #f8fafc;          // fondo general
-  --color-surface: #ffffff;     // cards / contenedores
+  --color-border: #f8fafc;
+  --color-surface: #ffffff;
   --color-border: #e2e8f0;
 
   /* Text */
@@ -41,9 +72,7 @@ h2 {
   /* Status */
   --color-success: #16a34a;
   --color-danger: #dc2626;
-   --shadow-card:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 html.dark {
@@ -63,9 +92,31 @@ html.dark {
   /* Status */
   --color-success: #22c55e;
   --color-danger: #f87171;
-   --shadow-card:
-    0 1px 2px rgba(255, 255, 255, 0.06),
-    0 8px 24px rgba(255, 255, 255, 0.08);
+  --shadow-card:
+    0 1px 2px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(255, 255, 255, 0.08);
+
+  /* Spacing (8pt system) */
+  --space-1: 0.25rem; // 4px
+  --space-2: 0.5rem; // 8px
+  --space-3: 0.75rem; // 12px
+  --space-4: 1rem; // 16px
+  --space-5: 1.5rem; // 24px
+  --space-6: 2rem; // 32px
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Typography */
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 2rem;
+
+  /* Line heights */
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
 }
 
 html.dark .habit-item {

@@ -3,7 +3,6 @@ import { ThemeService } from '../core/services/theme/theme.service';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,

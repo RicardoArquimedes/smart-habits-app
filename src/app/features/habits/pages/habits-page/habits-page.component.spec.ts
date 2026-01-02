@@ -8,9 +8,8 @@ describe('HabitsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HabitsPageComponent]
-    })
-    .compileComponents();
+      imports: [HabitsPageComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HabitsPageComponent);
     component = fixture.componentInstance;

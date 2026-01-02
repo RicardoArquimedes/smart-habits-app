@@ -8,9 +8,8 @@ describe('HabitFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HabitFormComponent]
-    })
-    .compileComponents();
+      imports: [HabitFormComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HabitFormComponent);
     component = fixture.componentInstance;

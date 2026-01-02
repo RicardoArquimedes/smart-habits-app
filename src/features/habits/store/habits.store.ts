@@ -7,19 +7,15 @@ const STORAGE_KEY = 'smart-habits';
 @Injectable({
   providedIn: 'root',
 })
-
-
 export class HabitsStore {
-
   private readonly _filter = signal<HabitFilter>('all');
 
-readonly filter = computed(() => this._filter());
-readonly hasHabits = computed(() => this.totalHabits() > 0);
+  readonly filter = computed(() => this._filter());
+  readonly hasHabits = computed(() => this.totalHabits() > 0);
 
-readonly hasFilteredResults = computed(
-  () => this.filteredHabits().length > 0
-);
-
+  readonly hasFilteredResults = computed(
+    () => this.filteredHabits().length > 0,
+  );
 
   // =========================
   // Estado principal (privado)
@@ -37,25 +33,24 @@ readonly hasFilteredResults = computed(
   readonly totalHabits = computed(() => this._habits().length);
 
   readonly completedHabits = computed(
-    () => this._habits().filter(h => h.completed).length
+    () => this._habits().filter((h) => h.completed).length,
   );
 
   readonly filteredHabits = computed(() => {
-  const habits = this._habits();
-  const filter = this._filter();
+    const habits = this._habits();
+    const filter = this._filter();
 
-  switch (filter) {
-    case 'completed':
-      return habits.filter(h => h.completed);
+    switch (filter) {
+      case 'completed':
+        return habits.filter((h) => h.completed);
 
-    case 'pending':
-      return habits.filter(h => !h.completed);
+      case 'pending':
+        return habits.filter((h) => !h.completed);
 
-    default:
-      return habits;
-  }
-});
-
+      default:
+        return habits;
+    }
+  });
 
   constructor() {
     // Persistencia automática
@@ -76,14 +71,12 @@ readonly hasFilteredResults = computed(
       completed: false,
     };
 
-    this._habits.update(habits => [...habits, newHabit]);
+    this._habits.update((habits) => [...habits, newHabit]);
   }
 
   toggleHabit(id: string) {
-    this._habits.update(habits =>
-      habits.map(h =>
-        h.id === id ? { ...h, completed: !h.completed } : h
-      )
+    this._habits.update((habits) =>
+      habits.map((h) => (h.id === id ? { ...h, completed: !h.completed } : h)),
     );
   }
 
@@ -98,7 +91,7 @@ readonly hasFilteredResults = computed(
       const parsed = JSON.parse(raw) as Habit[];
 
       // Opcional: normalizar fechas si las usas luego
-      return parsed.map(h => ({
+      return parsed.map((h) => ({
         ...h,
         createdAt: new Date(h.createdAt),
       }));
@@ -108,19 +101,17 @@ readonly hasFilteredResults = computed(
   }
 
   readonly pendingHabits = computed(
-  () => this.totalHabits() - this.completedHabits()
-);
+    () => this.totalHabits() - this.completedHabits(),
+  );
 
-readonly progress = computed(() => {
-  const total = this.totalHabits();
-  if (total === 0) return 0;
+  readonly progress = computed(() => {
+    const total = this.totalHabits();
+    if (total === 0) return 0;
 
-  return Math.round((this.completedHabits() / total) * 100);
-});
+    return Math.round((this.completedHabits() / total) * 100);
+  });
 
   setFilter(filter: HabitFilter) {
-  this._filter.set(filter);
-}
-
-
+    this._filter.set(filter);
+  }
 }

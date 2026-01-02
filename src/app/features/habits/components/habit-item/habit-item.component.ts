@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Habit } from '../../../../../core/models/habit.model';
 
-
 @Component({
   selector: 'app-habit-item',
   standalone: true,
