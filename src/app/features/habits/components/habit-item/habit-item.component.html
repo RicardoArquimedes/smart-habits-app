@@ -3,7 +3,8 @@
     {{ habit.title }}
   </span>
 
-  <button (click)="onToggle()">
+  <button (click)="onToggle()"
+  [attr.aria-label]="habit.completed ? 'Mark as pending' : 'Mark as completed'">
     {{ habit.completed ? 'Undo' : 'Done' }}
   </button>
 </div>

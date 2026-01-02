@@ -1,9 +1,11 @@
 <form (ngSubmit)="submit()">
-  <input
+ <input
+    id="habit-title"
     type="text"
     placeholder="New habit"
     [(ngModel)]="title"
     name="title"
+    required
   />
 
   <button type="submit">Add</button>

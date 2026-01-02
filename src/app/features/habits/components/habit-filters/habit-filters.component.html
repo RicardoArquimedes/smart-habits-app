@@ -1,9 +1,11 @@
 <div class="filters">
-  <button
-    [class.active]="current === 'all'"
-    (click)="select('all')">
-    All
-  </button>
+<button
+  [class.active]="current === 'all'"
+  [attr.aria-pressed]="current === 'all'"
+  (click)="select('all')">
+  All
+</button>
+
 
   <button
     [class.active]="current === 'completed'"

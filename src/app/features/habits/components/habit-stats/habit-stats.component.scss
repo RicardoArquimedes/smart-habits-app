@@ -10,7 +10,8 @@
 .stat {
   padding: 0.75rem;
   border-radius: 8px;
-  background: #f5f5f5;
+  background-color: white;
+  border: 1px solid #e3e8ee;
   text-align: center;
     display: flex;
   flex-direction: column;
@@ -18,14 +19,17 @@
   gap: 0.25rem; // 👈 espacio limpio entre número y texto
 }
 
-.progress {
-  background: #e0f2ff;
+.stat.progress {
+  background-color: #e6f2ff;
+  border-color: #a6cfd5;
 }
+
 
 .stat strong {
   font-size: 1.5rem;
   font-weight: 700;
-  line-height: 1; // 👈 evita que se “pegue” visualmente
+  line-height: 1; // 👈 evita que se “pegue” visualmente;
+  letter-spacing: -0.02em;
 }
 
 .stat span {
