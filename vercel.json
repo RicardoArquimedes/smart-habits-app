@@ -11,5 +11,11 @@
       "src": "/(.*)",
       "dest": "/dist/smart-habits-app/index.html"
     }
+  ],
+    "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
