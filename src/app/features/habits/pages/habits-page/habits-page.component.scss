@@ -64,3 +64,14 @@ button:hover {
 section {
   margin-bottom: 1.5rem;
 }
+
+.title-logo {
+  width: 48px;
+  object-fit: contain;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
