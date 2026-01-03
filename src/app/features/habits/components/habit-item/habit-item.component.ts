@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Habit } from '../../../../../core/models/habit.model';
 
 @Component({
@@ -8,13 +8,13 @@ import { Habit } from '../../../../../core/models/habit.model';
   styleUrl: './habit-item.component.scss',
 })
 export class HabitItemComponent {
-  // INPUT: dato que NO me pertenece
-  @Input({ required: true }) habit!: Habit;
+  // INPUT como signal (dato externo, solo lectura)
+  habit = input.required<Habit>();
 
-  // OUTPUT: aviso de algo que pasó
-  @Output() toggle = new EventEmitter<string>();
+  // OUTPUT como signal-based output
+  toggle = output<string>();
 
   onToggle() {
-    this.toggle.emit(this.habit.id);
+    this.toggle.emit(this.habit().id);
   }
 }

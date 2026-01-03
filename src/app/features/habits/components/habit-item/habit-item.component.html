@@ -1,10 +1,16 @@
 <div class="habit-item">
-  <span [class.completed]="habit.completed">
-    {{ habit.title }}
+  <span [class.completed]="habit().completed">
+    {{ habit().title }}
   </span>
 
-  <button (click)="onToggle()"
-  [attr.aria-label]="habit.completed ? 'Mark as pending' : 'Mark as completed'">
-    {{ habit.completed ? 'Undo' : 'Done' }}
+  <button
+    (click)="onToggle()"
+    [attr.aria-label]="
+      habit().completed
+        ? 'Mark as pending'
+        : 'Mark as completed'
+    "
+  >
+    {{ habit().completed ? 'Undo' : 'Done' }}
   </button>
 </div>
