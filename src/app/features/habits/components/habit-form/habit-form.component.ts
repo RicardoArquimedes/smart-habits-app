@@ -14,7 +14,7 @@ export class HabitFormComponent {
   date = signal(this.today());
 
   // OUTPUT: aviso que se quiere crear un hábito
-createHabit = output<Habit>();
+  createHabit = output<Habit>();
   submit() {
     const value = this.title().trim();
     if (!value) return;
@@ -24,19 +24,17 @@ createHabit = output<Habit>();
       title: value,
       completed: false,
       date: this.date(),
-      createdAt: new Date()
+      createdAt: new Date(),
     });
 
     this.title.set('');
   }
 
-
-    onDate(e: Event) {
+  onDate(e: Event) {
     this.date.set((e.target as HTMLInputElement).value);
   }
 
-    private today() {
+  private today() {
     return new Date().toISOString().slice(0, 10);
   }
-
 }

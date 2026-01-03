@@ -6,8 +6,8 @@ export interface Task {
   status: TaskStatus;
 
   // programación
-  date: string;        // 'YYYY-MM-DD' (día)
-  time?: string;       // 'HH:mm' (opcional)
+  date: string; // 'YYYY-MM-DD' (día)
+  time?: string; // 'HH:mm' (opcional)
   durationMin?: number; // estimado (opcional)
 
   createdAt: number;

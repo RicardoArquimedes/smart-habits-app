@@ -12,10 +12,9 @@ export class HabitsStore {
 
   readonly filter = computed(() => this._filter());
   readonly hasHabits = computed(() => this.totalHabits() > 0);
-   date = signal(this.today());
-selectedDate = signal(this.today());
-currentMonth = signal(new Date());
-
+  date = signal(this.today());
+  selectedDate = signal(this.today());
+  currentMonth = signal(new Date());
 
   readonly hasFilteredResults = computed(
     () => this.filteredHabits().length > 0,
@@ -67,22 +66,20 @@ currentMonth = signal(new Date());
   // =========================
   // Acciones
   // =========================
-addHabit(habitOrTitle: Habit | string) {
-  const habit =
-    typeof habitOrTitle === 'string'
-      ? {
-          id: crypto.randomUUID(),
-          title: habitOrTitle,
-          createdAt: new Date(),
-          completed: false,
-          date: this.selectedDate(),
+  addHabit(habitOrTitle: Habit | string) {
+    const habit =
+      typeof habitOrTitle === 'string'
+        ? {
+            id: crypto.randomUUID(),
+            title: habitOrTitle,
+            createdAt: new Date(),
+            completed: false,
+            date: this.selectedDate(),
+          }
+        : habitOrTitle;
 
-        }
-      : habitOrTitle;
-
-  this._habits.update(h => [...h, habit]);
-}
-
+    this._habits.update((h) => [...h, habit]);
+  }
 
   toggleHabit(id: string) {
     this._habits.update((habits) =>
@@ -108,12 +105,12 @@ addHabit(habitOrTitle: Habit | string) {
   // =========================
 
   private today() {
-  return new Date().toISOString().slice(0, 10);
-}
+    return new Date().toISOString().slice(0, 10);
+  }
 
-private format(date: Date) {
-  return date.toISOString().slice(0, 10);
-}
+  private format(date: Date) {
+    return date.toISOString().slice(0, 10);
+  }
 
   private loadFromStorage(): Habit[] {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -147,21 +144,31 @@ private format(date: Date) {
     this._filter.set(filter);
   }
 
- calendarDays = computed(() => {
+calendarDays = computed(() => {
   const month = this.currentMonth();
   const year = month.getFullYear();
   const monthIndex = month.getMonth();
+  const filter = this.filter();
 
   const first = new Date(year, monthIndex, 1);
   const start = new Date(first);
   start.setDate(first.getDate() - ((first.getDay() + 6) % 7));
 
-  return Array.from({ length: 42 }).map((_, i) => {
+  const days = Array.from({ length: 42 }).map((_, i) => {
     const date = new Date(start);
     date.setDate(start.getDate() + i);
 
     const key = this.format(date);
-    const habits = this.habits().filter(h => h.date === key);
+
+    let habits = this.habits().filter(h => h.date === key);
+
+    if (filter === 'completed') {
+      habits = habits.filter(h => h.completed);
+    }
+
+    if (filter === 'pending') {
+      habits = habits.filter(h => !h.completed);
+    }
 
     return {
       key,
@@ -169,35 +176,43 @@ private format(date: Date) {
       inMonth: date.getMonth() === monthIndex,
       total: habits.length,
       completed: habits.filter(h => h.completed).length,
+      titles: habits.map(h => h.title),
     };
   });
+
+  // 🔥 SOLO ocultar días vacíos cuando NO es "all"
+  return filter === 'all'
+    ? days
+    : days.filter(day => day.total > 0);
 });
 
-monthLabel = computed(() => {
-  return this.currentMonth().toLocaleDateString(undefined, {
-    month: 'long',
-    year: 'numeric',
+
+
+
+  monthLabel = computed(() => {
+    return this.currentMonth().toLocaleDateString(undefined, {
+      month: 'long',
+      year: 'numeric',
+    });
   });
-});
 
-nextMonth() {
-  const d = new Date(this.currentMonth());
-  d.setMonth(d.getMonth() + 1);
-  this.currentMonth.set(d);
-}
+  nextMonth() {
+    const d = new Date(this.currentMonth());
+    d.setMonth(d.getMonth() + 1);
+    this.currentMonth.set(d);
+  }
 
-prevMonth() {
-  const d = new Date(this.currentMonth());
-  d.setMonth(d.getMonth() - 1);
-  this.currentMonth.set(d);
-}
+  prevMonth() {
+    const d = new Date(this.currentMonth());
+    d.setMonth(d.getMonth() - 1);
+    this.currentMonth.set(d);
+  }
 
-selectDate(date: string) {
-  this.selectedDate.set(date);
-}
+  selectDate(date: string) {
+    this.selectedDate.set(date);
+  }
 
-habitsForSelectedDay = computed(() =>
-  this.habits().filter(h => h.date === this.selectedDate())
-);
-
+  habitsForSelectedDay = computed(() =>
+    this.habits().filter((h) => h.date === this.selectedDate()),
+  );
 }

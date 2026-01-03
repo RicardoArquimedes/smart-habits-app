@@ -1,3 +1,7 @@
+/* =========================
+   RESET & BASE
+========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -6,44 +10,19 @@ body {
   margin: 0;
   font-family: "DM Sans", system-ui, sans-serif;
 
-  background-color: var(--color-border);
+  background-color: var(--color-background);
   color: var(--color-text-primary);
   font-size: var(--font-md);
   line-height: var(--lh-normal);
+
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
 }
 
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-}
-
-.theme-toggle {
-  font-size: 1.25rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  padding: 0.5rem;
-  border-radius: 50%;
-
-  color: var(--color-text-primary);
-
-  transition: background-color 0.15s ease;
-
-  &:hover {
-    background-color: var(--color-primary-soft);
-  }
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-action);
-  outline-offset: 2px;
-}
+/* =========================
+   TYPOGRAPHY
+========================= */
 
 h1 {
   font-size: var(--font-xl);
@@ -55,16 +34,51 @@ h2 {
   line-height: var(--lh-tight);
 }
 
+/* =========================
+   FOCUS & INTERACTION
+========================= */
+
+:focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+/* =========================
+   THEME TOGGLE
+========================= */
+
+.theme-toggle {
+  font-size: 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: var(--color-text-primary);
+
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-primary-soft);
+  }
+}
+
+/* =========================
+   LIGHT THEME (DEFAULT)
+========================= */
+
 :root {
   /* Backgrounds */
-  --color-border: #f8fafc;
+  --color-background: #f8fafc;
   --color-surface: #ffffff;
+  --color-surface-alt: #f1f5f9;
   --color-border: #e2e8f0;
-  --background-hover: #155a9c;
 
   /* Text */
   --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
 
   /* Brand / Accent */
   --color-primary: #2563eb;
@@ -74,16 +88,20 @@ h2 {
   /* Status */
   --color-success: #16a34a;
   --color-danger: #dc2626;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  /* Shadows */
+  --shadow-card:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.06);
 
   /* Spacing (8pt system) */
-  --space-1: 0.25rem; // 4px
-  --space-2: 0.5rem; // 8px
-  --space-3: 0.75rem; // 12px
-  --space-4: 1rem; // 16px
-  --space-5: 1.5rem; // 24px
-  --space-6: 2rem; // 32px
-  --space-7: 2.5rem; // 40px
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem;  /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem;    /* 16px */
+  --space-5: 1.5rem;  /* 24px */
+  --space-6: 2rem;    /* 32px */
+  --space-7: 2.5rem;  /* 40px */
 
   /* Radius */
   --radius-sm: 8px;
@@ -101,35 +119,50 @@ h2 {
   --lh-normal: 1.5;
 }
 
+/* =========================
+   DARK THEME
+========================= */
+
 html.dark {
   /* Backgrounds */
-  --color-border: #0f172a;
-  --color-surface: #020617;
+  --color-background: #020617;
+  --color-surface: #0b1220;
+  --color-surface-alt: #0f172a;
   --color-border: #1e293b;
 
   /* Text */
   --color-text-primary: #f8fafc;
   --color-text-secondary: #cbd5f5;
+  --color-text-muted: #94a3b8;
 
   /* Brand / Accent */
   --color-primary: #60a5fa;
-  --color-primary-soft: #1e3a8a;
+  --color-primary-soft: rgba(96, 165, 250, 0.15);
+  --color-action: #60a5fa;
 
   /* Status */
   --color-success: #22c55e;
   --color-danger: #f87171;
-  --shadow-card:
-    0 1px 2px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(255, 255, 255, 0.08);
 
-  --color-surface-completed: #0b1220; /* más oscuro que surface */
+  /* Shadows */
+  --shadow-card:
+    0 1px 2px rgba(255, 255, 255, 0.06),
+    0 8px 24px rgba(255, 255, 255, 0.08);
+
+  /* Completed state */
+  --color-surface-completed: #0f172a;
   --color-text-completed: #94a3b8;
 }
 
+/* =========================
+   HABIT ITEM ADJUSTMENTS
+========================= */
+
 html.dark .habit-item {
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-border);
 }
 
 html:not(.dark) .habit-item {
   border-color: var(--color-border);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-card);
 }

@@ -1,6 +1,12 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { Task } from '../../../core/models/task.model';
-import { addDays, endOfMonth, startOfMonth, startOfWeek, toDateKey } from '../../../core/utils/date.utils';
+import {
+  addDays,
+  endOfMonth,
+  startOfMonth,
+  startOfWeek,
+  toDateKey,
+} from '../../../core/utils/date.utils';
 
 @Injectable({ providedIn: 'root' })
 export class TasksStore {
@@ -40,12 +46,18 @@ export class TasksStore {
     const end = endOfMonth(cursor);
 
     // construir 6 semanas (42 celdas) para grid estable
-    const days: { key: string; inMonth: boolean; date: Date; count: number; done: number }[] = [];
+    const days: {
+      key: string;
+      inMonth: boolean;
+      date: Date;
+      count: number;
+      done: number;
+    }[] = [];
     let d = start;
     for (let i = 0; i < 42; i++) {
       const key = toDateKey(d);
       const list = this.tasksByDate().get(key) ?? [];
-      const done = list.filter(x => x.status === 'done').length;
+      const done = list.filter((x) => x.status === 'done').length;
 
       days.push({
         key,
@@ -75,7 +87,12 @@ export class TasksStore {
     this._monthCursor.set(new Date(c.getFullYear(), c.getMonth() + 1, 1));
   }
 
-  addTask(payload: { title: string; date: string; time?: string; durationMin?: number }) {
+  addTask(payload: {
+    title: string;
+    date: string;
+    time?: string;
+    durationMin?: number;
+  }) {
     const title = payload.title.trim();
     if (!title) return;
 
@@ -89,22 +106,28 @@ export class TasksStore {
       createdAt: Date.now(),
     };
 
-    this._tasks.update(list => [task, ...list]);
+    this._tasks.update((list) => [task, ...list]);
   }
 
   toggleTask(id: string) {
-    this._tasks.update(list =>
-      list.map(t => t.id === id ? { ...t, status: t.status === 'done' ? 'pending' : 'done' } : t)
+    this._tasks.update((list) =>
+      list.map((t) =>
+        t.id === id
+          ? { ...t, status: t.status === 'done' ? 'pending' : 'done' }
+          : t,
+      ),
     );
   }
 
   editTask(id: string, title: string) {
     const next = title.trim();
     if (!next) return;
-    this._tasks.update(list => list.map(t => (t.id === id ? { ...t, title: next } : t)));
+    this._tasks.update((list) =>
+      list.map((t) => (t.id === id ? { ...t, title: next } : t)),
+    );
   }
 
   deleteTask(id: string) {
-    this._tasks.update(list => list.filter(t => t.id !== id));
+    this._tasks.update((list) => list.filter((t) => t.id !== id));
   }
 }

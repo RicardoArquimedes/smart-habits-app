@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitsStore } from '../../../../../features/habits/store/habits.store';
 
-
 @Component({
   selector: 'app-calendar',
   standalone: true,

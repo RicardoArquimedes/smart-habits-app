@@ -17,7 +17,7 @@ import { CalendarGridComponent } from '../../components/calendar-grid/calendar-g
     HabitListComponent,
     HabitStatsComponent,
     HabitFiltersComponent,
-    CalendarGridComponent
+    CalendarGridComponent,
   ],
   templateUrl: './habits-page.component.html',
   styleUrl: './habits-page.component.scss',

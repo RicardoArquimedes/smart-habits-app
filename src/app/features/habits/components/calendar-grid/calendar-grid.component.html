@@ -9,11 +9,18 @@
         <span class="day-number">{{ day.day }}</span>
       </header>
 
-      @if (day.total > 0) {
-        <div class="stats">
-          <span>{{ day.completed }}/{{ day.total }}</span>
-        </div>
-      }
+@if (day.total > 0) {
+  <div class="stats">
+    <span>{{ day.completed }}/{{ day.total }}</span>
+  </div>
+
+  <ul class="tasks-preview">
+    @for (title of day.titles; track title) {
+      <li>{{ title }}</li>
+    }
+  </ul>
+}
+
     </button>
   }
 </div>
