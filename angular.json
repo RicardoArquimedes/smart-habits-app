@@ -16,10 +16,8 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
-
-          "options": {
-
-            "outputPath": "dist/",
+            "options": {
+            "outputPath": "dist/smart-habits-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -40,6 +38,7 @@
           },
           "configurations": {
             "production": {
+                "baseHref": "/smart-habits-app/",
               "budgets": [
                 {
                   "type": "initial",
@@ -101,6 +100,9 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
