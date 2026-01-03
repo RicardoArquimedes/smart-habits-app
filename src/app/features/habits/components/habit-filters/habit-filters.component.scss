@@ -19,7 +19,7 @@ button:hover {
   background-color: var(--primary-hover);
 }
 button.active {
-  background: #1976d2;
+  background: var(--color-action);
   color: white;
-  border-color: #1976d2;
+  border-color: var(--color-action);
 }

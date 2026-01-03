@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { HabitItemComponent } from '../habit-item/habit-item.component';
 import { Habit } from '../../../../../core/models/habit.model';
 
@@ -10,13 +10,11 @@ import { Habit } from '../../../../../core/models/habit.model';
   styleUrl: './habit-list.component.scss',
 })
 export class HabitListComponent {
-  // INPUT: lista de hábitos (NO es dueña)
-  @Input({ required: true }) habits: Habit[] = [];
+  // INPUT como signal (lista que viene de afuera)
+  habits = input.required<Habit[]>();
 
-  // OUTPUT: aviso cuando un hábito se quiere toggle
-  @Output() toggleHabit = new EventEmitter<string>();
-
-  onToggle(id: string) {
-    this.toggleHabit.emit(id);
-  }
+  // OUTPUTS como signal-outputs
+  toggleHabit = output<string>();
+  editHabit = output<{ id: string; title: string }>();
+  deleteHabit = output<string>();
 }

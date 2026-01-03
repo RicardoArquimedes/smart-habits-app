@@ -14,20 +14,20 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: var(--color-action);
 }
 
 button {
   padding: 0.6rem 1rem;
   border-radius: 6px;
   border: none;
-  background: #1976d2;
+  background: var(--color-action);
   color: white;
   cursor: pointer;
 }
 
 button:hover {
-  background: #155a9c;
+  background: var(--background-hover);
 }
 
 .sr-only {

@@ -44,11 +44,14 @@
     <section aria-labelledby="list-title">
       <h2 id="list-title" class="sr-only">Habits list</h2>
 
-      <app-habit-list
-        *ngIf="store.hasFilteredResults(); else emptyState"
-        [habits]="store.filteredHabits()"
-        (toggleHabit)="store.toggleHabit($event)">
-      </app-habit-list>
+ <app-habit-list
+  *ngIf="store.hasFilteredResults(); else emptyState"
+  [habits]="store.filteredHabits()"
+  (toggleHabit)="store.toggleHabit($event)"
+  (editHabit)="store.editHabit($event.id, $event.title)"
+  (deleteHabit)="store.deleteHabit($event)">
+</app-habit-list>
+
 
       <ng-template #emptyState>
         <p class="empty" role="status" aria-live="polite">

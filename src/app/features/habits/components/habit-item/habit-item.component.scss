@@ -20,8 +20,10 @@
     margin-top: 0.75rem;
   }
 }
+
 .habit-item.completed {
-  background-color: #f1f7f6;
+  background-color: var(--color-surface-completed);
+  color: var(--color-text-completed);
 }
 
 .habit-item + .habit-item {
@@ -30,13 +32,37 @@
 
 .completed {
   text-decoration: line-through;
-  opacity: 0.6;
+  color: var(--color-text-completed);
+}
+
+.title {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button.ghost {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+button.danger {
+  color: var(--color-danger);
+}
+
+.edit-input {
+  flex: 1;
+  padding: 0.5rem;
 }
 
 button {
   border: none;
   background-color: var(--primary);
-  color: #1976d2;
+  color: var(--color-action);
   cursor: pointer;
   font-weight: 500;
 }

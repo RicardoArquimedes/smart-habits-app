@@ -1,12 +1,14 @@
 <div class="habit-list">
-  @for (habit of habits; track habit.id) {
+  @for (habit of habits(); track habit.id) {
     <app-habit-item
       [habit]="habit"
-      (toggle)="onToggle($event)">
+      (toggle)="toggleHabit.emit($event)"
+      (edit)="editHabit.emit($event)"
+      (remove)="deleteHabit.emit($event)">
     </app-habit-item>
   }
 
-  @if (habits.length === 0) {
+  @if (habits().length === 0) {
     <p>No habits yet. Start by adding one ✨</p>
   }
 </div>

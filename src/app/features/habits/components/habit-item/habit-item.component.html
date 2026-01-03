@@ -1,16 +1,59 @@
-<div class="habit-item">
-  <span [class.completed]="habit().completed">
-    {{ habit().title }}
-  </span>
+<div class="habit-item" [class.completed]="habit().completed">
 
-  <button
-    (click)="onToggle()"
-    [attr.aria-label]="
-      habit().completed
-        ? 'Mark as pending'
-        : 'Mark as completed'
-    "
-  >
-    {{ habit().completed ? 'Undo' : 'Done' }}
-  </button>
+  <!-- VIEW MODE -->
+  <ng-container *ngIf="!isEditing(); else editMode">
+    <span class="title">
+      {{ habit().title }}
+    </span>
+
+    <div class="actions">
+      <!-- EDIT -->
+      <button
+        class="ghost"
+        (click)="startEdit()"
+        aria-label="Edit habit"
+      >
+        ✏️
+      </button>
+
+      <!-- TOGGLE -->
+      <button
+        (click)="onToggle()"
+        [attr.aria-label]="
+          habit().completed
+            ? 'Mark as pending'
+            : 'Mark as completed'
+        "
+      >
+        {{ habit().completed ? 'Undo' : 'Done' }}
+      </button>
+
+      <!-- DELETE -->
+      <button
+        class="danger"
+        (click)="confirmDelete()"
+        aria-label="Delete habit"
+      >
+        🗑️
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- EDIT MODE -->
+  <ng-template #editMode>
+    <input
+      class="edit-input"
+      [value]="editedTitle()"
+      (input)="onInput($event)"
+      (keydown.enter)="saveEdit()"
+      (keydown.escape)="cancelEdit()"
+      autofocus
+    />
+
+    <div class="actions">
+      <button (click)="saveEdit()">Save</button>
+      <button class="ghost" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </ng-template>
+
 </div>

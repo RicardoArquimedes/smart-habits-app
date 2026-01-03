@@ -80,26 +80,18 @@ export class HabitsStore {
     );
   }
 
-
   editHabit(id: string, newTitle: string) {
-  const title = newTitle.trim();
-  if (!title) return;
+    const title = newTitle.trim();
+    if (!title) return;
 
-  this._habits.update(habits =>
-    habits.map(habit =>
-      habit.id === id
-        ? { ...habit, title }
-        : habit
-    )
-  );
-}
+    this._habits.update((habits) =>
+      habits.map((habit) => (habit.id === id ? { ...habit, title } : habit)),
+    );
+  }
 
-deleteHabit(id: string) {
-  this._habits.update(habits =>
-    habits.filter(habit => habit.id !== id)
-  );
-}
-
+  deleteHabit(id: string) {
+    this._habits.update((habits) => habits.filter((habit) => habit.id !== id));
+  }
 
   // =========================
   // Helpers privados
