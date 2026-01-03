@@ -3,7 +3,7 @@
   <div class="brand">
     <img
       class="title-logo"
-      src="assets/icons/logo.png"
+      src="./assets/icons/smart-logo.png"
       alt="Smart Habits logo"
     />
     <h1>Smart Habits</h1>
@@ -48,12 +48,22 @@
       </app-habit-filters>
     </section>
 
+    <section aria-labelledby="calendar-title">
+  <h2 id="calendar-title" class="sr-only">Calendar</h2>
+
+  <app-calendar-grid
+    [days]="store.calendarDays()"
+    (selectDay)="store.selectDate($event)">
+  </app-calendar-grid>
+</section>
+
+
     <section aria-labelledby="list-title">
       <h2 id="list-title" class="sr-only">Habits list</h2>
 
  <app-habit-list
   *ngIf="store.hasFilteredResults(); else emptyState"
-  [habits]="store.filteredHabits()"
+[habits]="store.habitsForSelectedDay()"
   (toggleHabit)="store.toggleHabit($event)"
   (editHabit)="store.editHabit($event.id, $event.title)"
   (deleteHabit)="store.deleteHabit($event)">

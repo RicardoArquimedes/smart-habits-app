@@ -1,0 +1,60 @@
+<div class="calendar">
+
+  <!-- HEADER -->
+  <div class="calendar-header">
+    <button
+      class="ghost"
+      type="button"
+      aria-label="Previous month"
+      (click)="store.prevMonth()"
+    >
+      ‹
+    </button>
+
+    <span class="month-label">
+      {{ store.monthLabel() }}
+    </span>
+
+    <button
+      class="ghost"
+      type="button"
+      aria-label="Next month"
+      (click)="store.nextMonth()"
+    >
+      ›
+    </button>
+  </div>
+
+  <!-- WEEK DAYS -->
+  <div class="weekdays">
+    <span>Mon</span>
+    <span>Tue</span>
+    <span>Wed</span>
+    <span>Thu</span>
+    <span>Fri</span>
+    <span>Sat</span>
+    <span>Sun</span>
+  </div>
+
+  <!-- DAYS GRID -->
+  <div class="days-grid">
+    @for (d of store.calendarDays(); track d.key) {
+      <button
+        type="button"
+        class="day"
+        [class.outside]="!d.inMonth"
+        [class.selected]="d.key === store.selectedDate()"
+        (click)="store.selectDate(d.key)"
+      >
+        <span class="day-number">{{ d.day }}</span>
+
+        @if (d.total > 0) {
+          <span class="badge">
+            {{ d.completed }}/{{ d.total }}
+          </span>
+        }
+      </button>
+    }
+  </div>
+
+</div>

@@ -1,0 +1,19 @@
+<div class="calendar-grid">
+  @for (day of days(); track day.key) {
+    <button
+      class="day-card"
+      [class.outside]="!day.inMonth"
+      (click)="selectDay.emit(day.key)"
+    >
+      <header>
+        <span class="day-number">{{ day.day }}</span>
+      </header>
+
+      @if (day.total > 0) {
+        <div class="stats">
+          <span>{{ day.completed }}/{{ day.total }}</span>
+        </div>
+      }
+    </button>
+  }
+</div>

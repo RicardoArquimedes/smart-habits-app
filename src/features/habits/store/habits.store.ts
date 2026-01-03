@@ -12,6 +12,10 @@ export class HabitsStore {
 
   readonly filter = computed(() => this._filter());
   readonly hasHabits = computed(() => this.totalHabits() > 0);
+   date = signal(this.today());
+selectedDate = signal(this.today());
+currentMonth = signal(new Date());
+
 
   readonly hasFilteredResults = computed(
     () => this.filteredHabits().length > 0,
@@ -63,16 +67,22 @@ export class HabitsStore {
   // =========================
   // Acciones
   // =========================
-  addHabit(title: string) {
-    const newHabit: Habit = {
-      id: crypto.randomUUID(),
-      title,
-      createdAt: new Date(),
-      completed: false,
-    };
+addHabit(habitOrTitle: Habit | string) {
+  const habit =
+    typeof habitOrTitle === 'string'
+      ? {
+          id: crypto.randomUUID(),
+          title: habitOrTitle,
+          createdAt: new Date(),
+          completed: false,
+          date: this.selectedDate(),
 
-    this._habits.update((habits) => [...habits, newHabit]);
-  }
+        }
+      : habitOrTitle;
+
+  this._habits.update(h => [...h, habit]);
+}
+
 
   toggleHabit(id: string) {
     this._habits.update((habits) =>
@@ -96,6 +106,15 @@ export class HabitsStore {
   // =========================
   // Helpers privados
   // =========================
+
+  private today() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+private format(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
   private loadFromStorage(): Habit[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
@@ -127,4 +146,58 @@ export class HabitsStore {
   setFilter(filter: HabitFilter) {
     this._filter.set(filter);
   }
+
+ calendarDays = computed(() => {
+  const month = this.currentMonth();
+  const year = month.getFullYear();
+  const monthIndex = month.getMonth();
+
+  const first = new Date(year, monthIndex, 1);
+  const start = new Date(first);
+  start.setDate(first.getDate() - ((first.getDay() + 6) % 7));
+
+  return Array.from({ length: 42 }).map((_, i) => {
+    const date = new Date(start);
+    date.setDate(start.getDate() + i);
+
+    const key = this.format(date);
+    const habits = this.habits().filter(h => h.date === key);
+
+    return {
+      key,
+      day: date.getDate(),
+      inMonth: date.getMonth() === monthIndex,
+      total: habits.length,
+      completed: habits.filter(h => h.completed).length,
+    };
+  });
+});
+
+monthLabel = computed(() => {
+  return this.currentMonth().toLocaleDateString(undefined, {
+    month: 'long',
+    year: 'numeric',
+  });
+});
+
+nextMonth() {
+  const d = new Date(this.currentMonth());
+  d.setMonth(d.getMonth() + 1);
+  this.currentMonth.set(d);
+}
+
+prevMonth() {
+  const d = new Date(this.currentMonth());
+  d.setMonth(d.getMonth() - 1);
+  this.currentMonth.set(d);
+}
+
+selectDate(date: string) {
+  this.selectedDate.set(date);
+}
+
+habitsForSelectedDay = computed(() =>
+  this.habits().filter(h => h.date === this.selectedDate())
+);
+
 }

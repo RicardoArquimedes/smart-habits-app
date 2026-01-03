@@ -6,6 +6,7 @@ import { HabitStatsComponent } from '../../components/habit-stats/habit-stats.co
 import { HabitFiltersComponent } from '../../components/habit-filters/habit-filters.component';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../../../core/services/theme/theme.service';
+import { CalendarGridComponent } from '../../components/calendar-grid/calendar-grid.component';
 
 @Component({
   selector: 'app-habits-page',
@@ -16,6 +17,7 @@ import { ThemeService } from '../../../../../core/services/theme/theme.service';
     HabitListComponent,
     HabitStatsComponent,
     HabitFiltersComponent,
+    CalendarGridComponent
   ],
   templateUrl: './habits-page.component.html',
   styleUrl: './habits-page.component.scss',

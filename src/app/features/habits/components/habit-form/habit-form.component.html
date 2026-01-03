@@ -8,5 +8,11 @@
     required
   />
 
+    <input
+    type="date"
+    [value]="date()"
+    (input)="onDate($event)"
+  />
+
   <button type="submit">Add</button>
 </form>

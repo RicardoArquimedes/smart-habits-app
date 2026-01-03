@@ -3,4 +3,5 @@ export interface Habit {
   title: string;
   createdAt: Date;
   completed: boolean;
+  date: string; // YYYY-MM-DD
 }
