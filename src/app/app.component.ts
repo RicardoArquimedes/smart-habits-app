@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ThemeService } from '../core/services/theme/theme.service';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,10 @@ import { CommonModule } from '@angular/common';
   template: `<router-outlet />`,
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly themeService: ThemeService) {}
+  constructor(private readonly themeService: ThemeService, private readonly auth: AuthService) {}
 
   ngOnInit(): void {
+              this.auth.initGoogle('google-btn');
     this.themeService.init();
   }
 }
