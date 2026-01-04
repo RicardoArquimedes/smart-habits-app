@@ -4,7 +4,6 @@ import { Habit } from '../../../../core/models/habit.model';
 import { Observable } from 'rxjs';
 import { HabitApiResponse } from '../../../../core/models/habit-api-response.model';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -17,37 +16,27 @@ export class HabitsApi {
   // =========================
   // GET
   // =========================
-getHabits() {
-  return this.http.get<HabitApiResponse[]>(`${this.baseUrl}`);
-}
+  getHabits() {
+    return this.http.get<HabitApiResponse[]>(`${this.baseUrl}`);
+  }
 
   // =========================
   // POST (crear)
   // =========================
-createHabit(payload: { title: string; date: string }) {
-  return this.http.post<HabitApiResponse>(
-    `${this.baseUrl}`,
-    payload
-  );
-}
+  createHabit(payload: { title: string; date: string }) {
+    return this.http.post<HabitApiResponse>(`${this.baseUrl}`, payload);
+  }
 
   // =========================
   // PUT (editar / toggle)
   // =========================
-// baseUrl = https://.../dev/habits
+  // baseUrl = https://.../dev/habits
 
-deleteHabit(id: string) {
-  return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  deleteHabit(id: string) {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  updateHabit(id: string, payload: { title?: string; completed?: boolean }) {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, payload);
+  }
 }
-
-updateHabit(
-  id: string,
-  payload: { title?: string; completed?: boolean }
-) {
-  return this.http.put<void>(`${this.baseUrl}/${id}`, payload);
-}
-
-
-}
-
-

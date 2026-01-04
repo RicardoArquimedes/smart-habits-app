@@ -15,18 +15,17 @@ export class HabitFormComponent {
 
   // OUTPUT: aviso que se quiere crear un hábito
   createHabit = output<any>();
-submit() {
-  const title = this.title().trim();
-  if (!title) return;
+  submit() {
+    const title = this.title().trim();
+    if (!title) return;
 
-  this.createHabit.emit({
-    title,
-    date: this.date(),
-  });
+    this.createHabit.emit({
+      title,
+      date: this.date(),
+    });
 
-  this.title.set('');
-}
-
+    this.title.set('');
+  }
 
   onDate(e: Event) {
     this.date.set((e.target as HTMLInputElement).value);

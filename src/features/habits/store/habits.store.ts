@@ -40,11 +40,11 @@ export class HabitsStore {
   );
 
   // =========================
-// Estado de sincronización (API)
-// =========================
-readonly isSyncing = signal(false);
-readonly lastSyncAt = signal<Date | null>(null);
-private api = inject(HabitsApi);
+  // Estado de sincronización (API)
+  // =========================
+  readonly isSyncing = signal(false);
+  readonly lastSyncAt = signal<Date | null>(null);
+  private api = inject(HabitsApi);
 
   readonly filteredHabits = computed(() => {
     const habits = this._habits();
@@ -63,104 +63,90 @@ private api = inject(HabitsApi);
   });
 
   constructor() {
-
-
-  // 🔌 Auto-sync cuando haya usuario autenticado
-  effect(() => {
-    if (this.userId() && this.authToken()) {
-      this.syncToApi();
-    }
-  });
+    // 🔌 Auto-sync cuando haya usuario autenticado
+    effect(() => {
+      if (this.userId() && this.authToken()) {
+        this.syncToApi();
+      }
+    });
   }
 
   // =========================
   // Acciones
   // =========================
-addHabit(dto: any) {
-  const title = dto.title.trim();
-  if (!title) return;
+  addHabit(dto: any) {
+    const title = dto.title.trim();
+    if (!title) return;
 
-  this.api.createHabit({
-    title,
-    date: dto.date,
-  }).subscribe({
-    next: created => {
-      this._habits.update(h => [
-        ...h,
-        {
-          id: created.habitId,      // 👈 CLAVE
-          title: created.title,
-          completed: created.completed,
-          date: created.date,
-          createdAt: new Date(created.createdAt),
+    this.api
+      .createHabit({
+        title,
+        date: dto.date,
+      })
+      .subscribe({
+        next: (created) => {
+          this._habits.update((h) => [
+            ...h,
+            {
+              id: created.habitId, // 👈 CLAVE
+              title: created.title,
+              completed: created.completed,
+              date: created.date,
+              createdAt: new Date(created.createdAt),
+            },
+          ]);
         },
-      ]);
-    },
-    error: err => {
-      console.error('Error creating habit', err);
-    },
-  });
-}
+        error: (err) => {
+          console.error('Error creating habit', err);
+        },
+      });
+  }
 
+  toggleHabit(id: string) {
+    const habit = this._habits().find((h) => h.id === id);
+    if (!habit) return;
 
-toggleHabit(id: string) {
-  const habit = this._habits().find(h => h.id === id);
-  if (!habit) return;
+    const completed = !habit.completed;
 
-  const completed = !habit.completed;
+    this.api.updateHabit(id, { completed }).subscribe({
+      next: () => {
+        this._habits.update((habits) =>
+          habits.map((h) => (h.id === id ? { ...h, completed } : h)),
+        );
+      },
+      error: (err) => {
+        console.error('Error toggling habit', err);
+      },
+    });
+  }
 
-  this.api.updateHabit(id, { completed }).subscribe({
-    next: () => {
-      this._habits.update(habits =>
-        habits.map(h =>
-          h.id === id ? { ...h, completed } : h
-        )
-      );
-    },
-    error: err => {
-      console.error('Error toggling habit', err);
-    },
-  });
-}
+  editHabit(id: string, newTitle: string) {
+    const title = newTitle.trim();
+    if (!title) return;
 
+    this.api.updateHabit(id, { title }).subscribe({
+      next: () => {
+        this._habits.update((habits) =>
+          habits.map((h) => (h.id === id ? { ...h, title } : h)),
+        );
+      },
+      error: (err) => {
+        console.error('Error updating habit', err);
+      },
+    });
+  }
 
-
-editHabit(id: string, newTitle: string) {
-  const title = newTitle.trim();
-  if (!title) return;
-
-  this.api.updateHabit(id, { title }).subscribe({
-    next: () => {
-      this._habits.update(habits =>
-        habits.map(h =>
-          h.id === id ? { ...h, title } : h
-        )
-      );
-    },
-    error: err => {
-      console.error('Error updating habit', err);
-    },
-  });
-}
-
-
-
-deleteHabit(id: string) {
-  console.log("el id", id)
-  this.api.deleteHabit(id).subscribe({
-    next: () => {
-      this._habits.update(habits =>
-        habits.filter(h => h.id !== id)
-      );
-    },
-    error: err => {
-      console.error('Error deleting habit', err);
-    },
-  });
-}
-
-
-
+  deleteHabit(id: string) {
+    console.log('el id', id);
+    this.api.deleteHabit(id).subscribe({
+      next: () => {
+        this._habits.update((habits) => habits.filter((h) => h.id !== id));
+      },
+      error: (err) => {
+        console.error('Error deleting habit', err);
+      },
+    });
+  }
 
   // =========================
   // Helpers privados
@@ -173,8 +159,6 @@ deleteHabit(id: string) {
   private format(date: Date) {
     return date.toISOString().slice(0, 10);
   }
-
-
 
   readonly pendingHabits = computed(
     () => this.totalHabits() - this.completedHabits(),
@@ -191,50 +175,45 @@ deleteHabit(id: string) {
     this._filter.set(filter);
   }
 
-calendarDays = computed(() => {
-  const month = this.currentMonth();
-  const year = month.getFullYear();
-  const monthIndex = month.getMonth();
-  const filter = this.filter();
+  calendarDays = computed(() => {
+    const month = this.currentMonth();
+    const year = month.getFullYear();
+    const monthIndex = month.getMonth();
+    const filter = this.filter();
 
-  const first = new Date(year, monthIndex, 1);
-  const start = new Date(first);
-  start.setDate(first.getDate() - ((first.getDay() + 6) % 7));
+    const first = new Date(year, monthIndex, 1);
+    const start = new Date(first);
+    start.setDate(first.getDate() - ((first.getDay() + 6) % 7));
 
-  const days = Array.from({ length: 42 }).map((_, i) => {
-    const date = new Date(start);
-    date.setDate(start.getDate() + i);
+    const days = Array.from({ length: 42 }).map((_, i) => {
+      const date = new Date(start);
+      date.setDate(start.getDate() + i);
 
-    const key = this.format(date);
+      const key = this.format(date);
 
-    let habits = this.habits().filter(h => h.date === key);
+      let habits = this.habits().filter((h) => h.date === key);
 
-    if (filter === 'completed') {
-      habits = habits.filter(h => h.completed);
-    }
+      if (filter === 'completed') {
+        habits = habits.filter((h) => h.completed);
+      }
 
-    if (filter === 'pending') {
-      habits = habits.filter(h => !h.completed);
-    }
+      if (filter === 'pending') {
+        habits = habits.filter((h) => !h.completed);
+      }
 
-    return {
-      key,
-      day: date.getDate(),
-      inMonth: date.getMonth() === monthIndex,
-      total: habits.length,
-      completed: habits.filter(h => h.completed).length,
-      titles: habits.map(h => h.title),
-    };
+      return {
+        key,
+        day: date.getDate(),
+        inMonth: date.getMonth() === monthIndex,
+        total: habits.length,
+        completed: habits.filter((h) => h.completed).length,
+        titles: habits.map((h) => h.title),
+      };
+    });
+
+    // 🔥 SOLO ocultar días vacíos cuando NO es "all"
+    return filter === 'all' ? days : days.filter((day) => day.total > 0);
   });
-
-  // 🔥 SOLO ocultar días vacíos cuando NO es "all"
-  return filter === 'all'
-    ? days
-    : days.filter(day => day.total > 0);
-});
-
-
-
 
   monthLabel = computed(() => {
     return this.currentMonth().toLocaleDateString(undefined, {
@@ -264,54 +243,52 @@ calendarDays = computed(() => {
   );
 
   // =========================
-// Auth (Google / JWT)
-// =========================
-readonly userId = signal<string | null>(null);
-readonly authToken = signal<string | null>(null);
+  // Auth (Google / JWT)
+  // =========================
+  readonly userId = signal<string | null>(null);
+  readonly authToken = signal<string | null>(null);
 
-setAuth(userId: string, token: string) {
-  this.userId.set(userId);
-  this.authToken.set(token);
-}
+  setAuth(userId: string, token: string) {
+    this.userId.set(userId);
+    this.authToken.set(token);
+  }
 
-clearAuth() {
-  this.userId.set(null);
-  this.authToken.set(null);
-}
+  clearAuth() {
+    this.userId.set(null);
+    this.authToken.set(null);
+  }
 
-// =========================
-// API Sync (placeholder)
-// =========================
-syncFromApi() {
-  // FUTURO:
-  // 1. Llamar API Gateway
-  // 2. Obtener hábitos del usuario
-  // 3. this._habits.set(response)
-  this.lastSyncAt.set(new Date());
-}
+  // =========================
+  // API Sync (placeholder)
+  // =========================
+  syncFromApi() {
+    // FUTURO:
+    // 1. Llamar API Gateway
+    // 2. Obtener hábitos del usuario
+    // 3. this._habits.set(response)
+    this.lastSyncAt.set(new Date());
+  }
 
-syncToApi() {
-  // FUTURO:
-  // 1. Enviar this._habits()
-  // 2. Guardar en DynamoDB
-}
+  syncToApi() {
+    // FUTURO:
+    // 1. Enviar this._habits()
+    // 2. Guardar en DynamoDB
+  }
 
-loadFromBackend() {
-  this.api.getHabits().subscribe({
-    next: (habits: HabitApiResponse[]) => {
-      this._habits.set(
-        habits.map(h => ({
-          id: h.habitId, // ✅ MAPEO CLAVE
-          title: h.title,
-          completed: h.completed,
-          date: h.date,
-          createdAt: new Date(h.createdAt),
-        }))
-      );
-    },
-    error: err => console.error(err),
-  });
-}
-
-
+  loadFromBackend() {
+    this.api.getHabits().subscribe({
+      next: (habits: HabitApiResponse[]) => {
+        this._habits.set(
+          habits.map((h) => ({
+            id: h.habitId, // ✅ MAPEO CLAVE
+            title: h.title,
+            completed: h.completed,
+            date: h.date,
+            createdAt: new Date(h.createdAt),
+          })),
+        );
+      },
+      error: (err) => console.error(err),
+    });
+  }
 }

@@ -19,40 +19,59 @@ export class AuthService {
   readonly token = computed(() => this._token());
   readonly isLoggedIn = computed(() => !!this._token());
 
+  constructor() {
+    // 🔥 RESTAURAR SESIÓN AL CARGAR APP
+    const storedToken = sessionStorage.getItem('auth_token');
+    const storedUser = sessionStorage.getItem('auth_user');
+
+    if (storedToken && storedUser) {
+      this._token.set(storedToken);
+      this._user.set(JSON.parse(storedUser));
+    }
+  }
+
   initGoogle(buttonId: string) {
-    // @ts-ignore
-    google.accounts.id.initialize({
+    const g = (window as any).google;
+    if (!g?.accounts?.id) return;
+
+    g.accounts.id.initialize({
       client_id: environment.GOOGLE_CLIENT_ID,
       callback: (response: any) => {
-        this._token.set(response.credential);
-        this._user.set(this.decodeJwt(response.credential));
+        const token = response.credential;
+        const user = this.decodeJwt(token);
+
+        this._token.set(token);
+        this._user.set(user);
+
+        // 🔥 PERSISTIR SESIÓN
+        sessionStorage.setItem('auth_token', token);
+        sessionStorage.setItem('auth_user', JSON.stringify(user));
       },
     });
 
-    // @ts-ignore
-    google.accounts.id.renderButton(
-      document.getElementById(buttonId),
-      {
-        theme: 'outline',
-        size: 'large',
-        shape: 'pill',
-        text: 'signin_with',
-      }
-    );
+    const el = document.getElementById(buttonId);
+    if (!el) return;
+
+    g.accounts.id.renderButton(el, {
+      theme: 'outline',
+      size: 'large',
+      shape: 'pill',
+    });
+  }
+
+  logout() {
+    this._token.set(null);
+    this._user.set(null);
+
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('auth_user');
+
+    const g = (window as any).google;
+    g?.accounts?.id?.disableAutoSelect?.();
   }
 
   private decodeJwt(token: string) {
     const base64 = token.split('.')[1];
     return JSON.parse(atob(base64));
   }
-
-  logout() {
-  this._token.set(null);
-  this._user.set(null);
-
-  // (opcional pero recomendado)
-  // Limpia cualquier sesión local que tengas
-  google?.accounts?.id?.disableAutoSelect?.();
-}
-
 }

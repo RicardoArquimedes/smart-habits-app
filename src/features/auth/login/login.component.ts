@@ -2,7 +2,6 @@ import { Component, AfterViewInit, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { environment } from '../../../environments/environment';
 
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,7 +15,5 @@ import { environment } from '../../../environments/environment';
 export class LoginComponent implements AfterViewInit {
   private auth = inject(AuthService);
 
-  ngAfterViewInit() {
-
-  }
+  ngAfterViewInit() {}
 }

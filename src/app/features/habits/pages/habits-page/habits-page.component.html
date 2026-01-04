@@ -1,36 +1,62 @@
 <div class="page">
   <!-- HEADER: SIEMPRE visible -->
- <header class="page-header">
+<!-- HEADER SOLO CUANDO ESTÁ LOGUEADO -->
+<header class="page-header" *ngIf="auth.isLoggedIn()">
+    <!-- Toggle flotante -->
+  <button
+    class="theme-floating"
+    type="button"
+    (click)="toggleTheme()"
+    aria-label="Toggle theme"
+  >
+    {{ theme() === 'dark' ? '☀️' : '🌙' }}
+  </button>
   <div class="brand">
     <img class="title-logo" src="./assets/icons/smart-logo.png" />
     <h1>Smart Habits</h1>
   </div>
 
   <div class="actions">
-    @if (auth.isLoggedIn()) {
-      <button
-        type="button"
-        class="ghost"
-        (click)="auth.logout()"
-        aria-label="Logout"
-      >
-        ⎋ Logout
-      </button>
-    }
-
     <button
       type="button"
-      class="theme-toggle"
-      (click)="toggleTheme()"
+      class="ghost"
+      (click)="auth.logout()"
+      aria-label="Logout"
     >
-      {{ theme() === 'dark' ? '☀️' : '🌙' }}
+     Logout ⎋
     </button>
   </div>
 </header>
 
 
+<!-- AUTH / LANDING CUANDO NO ESTÁ LOGUEADO -->
+<section class="auth-hero" *ngIf="!auth.isLoggedIn()">
+
+  <!-- Toggle flotante -->
+  <button
+    class="theme-floating"
+    type="button"
+    (click)="toggleTheme()"
+    aria-label="Toggle theme"
+  >
+    {{ theme() === 'dark' ? '☀️' : '🌙' }}
+  </button>
+
+  <img class="hero-logo" src="./assets/icons/smart-logo.png" />
+
+  <h2>Smart Habits</h2>
+  <p class="tagline">Construye hábitos, un día a la vez</p>
+
+  <!-- Aquí Google renderiza el botón -->
+     <section class="login-container">
+      <div id="google-btn"></div>
+    </section>
+</section>
+
+
+
   <!-- CONTENIDO SOLO SI ESTÁ LOGUEADO -->
-  <main *ngIf="auth.isLoggedIn(); else login">
+  <main *ngIf="auth.isLoggedIn();">
     <section>
       <app-habit-form
         (createHabit)="store.addHabit($event)">
@@ -78,10 +104,4 @@
   </main>
 
   <!-- LOGIN VIEW -->
-  <ng-template #login>
-    <section class="login-container">
-      <h2>Sign in</h2>
-      <div id="google-btn"></div>
-    </section>
-  </ng-template>
 </div>

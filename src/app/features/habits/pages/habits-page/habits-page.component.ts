@@ -23,7 +23,6 @@ import { AuthService } from '../../../../../core/services/auth/auth.service';
   templateUrl: './habits-page.component.html',
   styleUrl: './habits-page.component.scss',
 })
-
 export class HabitsPageComponent {
   readonly store = inject(HabitsStore);
   readonly auth = inject(AuthService);
@@ -41,12 +40,8 @@ export class HabitsPageComponent {
       }
 
       if (this.auth.user() && this.auth.token()) {
-        this.store.setAuth(
-          this.auth.user()!.sub,
-          this.auth.token()!
-        );
+        this.store.setAuth(this.auth.user()!.sub, this.auth.token()!);
         this.store.loadFromBackend();
-
       }
     });
   }
