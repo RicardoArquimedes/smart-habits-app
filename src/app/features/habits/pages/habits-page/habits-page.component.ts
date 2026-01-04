@@ -31,13 +31,18 @@ export class HabitsPageComponent {
   readonly theme = this.themeService.theme;
 
   constructor() {
-    effect(() => {
+
+       effect(() => {
       if (!this.auth.isLoggedIn()) {
-        // Espera a que el DOM exista
-        queueMicrotask(() => {
+        // Esperamos a que Angular pinte el DOM
+        setTimeout(() => {
           this.auth.initGoogle('google-btn');
         });
       }
+    });
+
+    effect(() => {
+
 
       if (this.auth.user() && this.auth.token()) {
         this.store.setAuth(this.auth.user()!.sub, this.auth.token()!);
