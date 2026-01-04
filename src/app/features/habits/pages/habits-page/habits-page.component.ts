@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { AfterViewInit, Component, effect, inject } from '@angular/core';
 import { HabitFormComponent } from '../../components/habit-form/habit-form.component';
 import { HabitListComponent } from '../../components/habit-list/habit-list.component';
 import { HabitsStore } from '../../../../../features/habits/store/habits.store';
@@ -23,23 +23,16 @@ import { AuthService } from '../../../../../core/services/auth/auth.service';
   templateUrl: './habits-page.component.html',
   styleUrl: './habits-page.component.scss',
 })
-export class HabitsPageComponent {
+export class HabitsPageComponent implements AfterViewInit {
   readonly store = inject(HabitsStore);
   readonly auth = inject(AuthService);
   private readonly themeService = inject(ThemeService);
-
+private googleInitialized = false;
   readonly theme = this.themeService.theme;
 
   constructor() {
 
-       effect(() => {
-      if (!this.auth.isLoggedIn()) {
-        // Esperamos a que Angular pinte el DOM
-        setTimeout(() => {
-          this.auth.initGoogle('google-btn');
-        });
-      }
-    });
+
 
     effect(() => {
 
@@ -49,6 +42,13 @@ export class HabitsPageComponent {
         this.store.loadFromBackend();
       }
     });
+  }
+
+   ngAfterViewInit() {
+    if (!this.googleInitialized) {
+      this.auth.initGoogle('google-btn');
+      this.googleInitialized = true;
+    }
   }
 
   toggleTheme() {

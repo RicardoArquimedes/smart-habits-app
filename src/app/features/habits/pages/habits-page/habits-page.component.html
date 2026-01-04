@@ -1,75 +1,76 @@
 <div class="page">
-  <!-- HEADER: SIEMPRE visible -->
-<!-- HEADER SOLO CUANDO ESTÁ LOGUEADO -->
-<header class="page-header" *ngIf="auth.isLoggedIn()">
-    <!-- Toggle flotante -->
-  <button
-    class="theme-floating"
-    type="button"
-    (click)="toggleTheme()"
-    aria-label="Toggle theme"
-  >
-    {{ theme() === 'dark' ? '☀️' : '🌙' }}
-  </button>
-  <div class="brand">
-    <img class="title-logo" src="./assets/icons/smart-logo.png" />
-    <h1>Smart Habits</h1>
-  </div>
 
-  <div class="actions">
-<div class="user-info">
+  <!-- HEADER: SOLO CUANDO ESTÁ LOGUEADO -->
+  <header class="page-header" *ngIf="auth.isLoggedIn()">
 
-
-  <div class="user-meta">
-
+    <!-- Toggle tema -->
     <button
+      class="theme-floating"
       type="button"
-      class="ghost"
-      (click)="auth.logout()"
+      (click)="toggleTheme()"
+      aria-label="Toggle theme"
     >
-      ⎋ Logout
+      {{ theme() === 'dark' ? '☀️' : '🌙' }}
     </button>
-  </div>
-    <img
-    class="avatar"
-    [src]="auth.user()?.picture"
-    alt="User avatar"
-    referrerpolicy="no-referrer"
-  />
-</div>
 
-  </div>
-</header>
+    <div class="brand">
+      <img class="title-logo" src="./assets/icons/smart-logo.png" />
+      <h1>Smart Habits</h1>
+    </div>
 
+    <div class="actions">
+      <div class="user-info">
 
-<!-- AUTH / LANDING CUANDO NO ESTÁ LOGUEADO -->
-<section class="auth-hero" *ngIf="!auth.isLoggedIn()">
+        <div class="user-meta">
+          <button
+            type="button"
+            class="ghost"
+            (click)="auth.logout()"
+          >
+            ⎋ Logout
+          </button>
+        </div>
 
-  <!-- Toggle flotante -->
-  <button
-    class="theme-floating"
-    type="button"
-    (click)="toggleTheme()"
-    aria-label="Toggle theme"
+        <img
+          class="avatar"
+          [src]="auth.user()?.picture"
+          alt="User avatar"
+          referrerpolicy="no-referrer"
+        />
+      </div>
+    </div>
+  </header>
+
+  <!-- AUTH / LANDING (SIEMPRE EN EL DOM) -->
+  <section
+    class="auth-hero"
+    [class.hidden]="auth.isLoggedIn()"
   >
-    {{ theme() === 'dark' ? '☀️' : '🌙' }}
-  </button>
 
-  <img class="hero-logo" src="./assets/icons/smart-logo.png" />
+    <!-- Toggle tema -->
+    <button
+      class="theme-floating"
+      type="button"
+      (click)="toggleTheme()"
+      aria-label="Toggle theme"
+    >
+      {{ theme() === 'dark' ? '☀️' : '🌙' }}
+    </button>
 
-  <h2>Smart Habits</h2>
-  <p class="tagline">Construye hábitos, un día a la vez</p>
+    <img class="hero-logo" src="./assets/icons/smart-logo.png" />
 
-  <!-- Aquí Google renderiza el botón -->
-     <section class="login-container">
+    <h2>Smart Habits</h2>
+    <p class="tagline">Construye hábitos, un día a la vez</p>
+
+    <!-- Google SIEMPRE aquí -->
+    <section class="login-container">
       <div id="google-btn"></div>
     </section>
-</section>
+  </section>
 
+  <!-- CONTENIDO SOLO CUANDO ESTÁ LOGUEADO -->
+  <main *ngIf="auth.isLoggedIn()">
 
-
-  <!-- CONTENIDO SOLO SI ESTÁ LOGUEADO -->
-  <main *ngIf="auth.isLoggedIn();">
     <section>
       <app-habit-form
         (createHabit)="store.addHabit($event)">
@@ -110,11 +111,11 @@
 
       <ng-template #emptyState>
         <p class="empty">
-          Agrega un hábito✨
+          Agrega un hábito ✨
         </p>
       </ng-template>
     </section>
+
   </main>
 
-  <!-- LOGIN VIEW -->
 </div>
