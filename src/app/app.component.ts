@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { ThemeService } from '../core/services/theme/theme.service';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../core/services/auth/auth.service';
+import { LoginComponent } from '../features/auth/login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,16 @@ import { AuthService } from '../core/services/auth/auth.service';
   template: `<router-outlet />`,
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly themeService: ThemeService, private readonly auth: AuthService) {}
+  constructor(private readonly themeService: ThemeService, private readonly auth: AuthService, private router: Router) {
+    effect(() => {
+      if (!this.auth.isLoggedIn()) {
+        this.router.navigate(['/login']);
+      }
+    });
+
+  }
 
   ngOnInit(): void {
-              this.auth.initGoogle('google-btn');
     this.themeService.init();
   }
 }

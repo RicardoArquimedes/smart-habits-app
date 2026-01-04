@@ -46,7 +46,6 @@ private googleInitialized = false;
 
    ngAfterViewInit() {
     if (!this.googleInitialized) {
-      this.auth.initGoogle('google-btn');
       this.googleInitialized = true;
     }
   }

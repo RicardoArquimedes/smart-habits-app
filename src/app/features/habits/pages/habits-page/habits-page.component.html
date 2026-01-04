@@ -1,10 +1,4 @@
-<div class="page">
-
-  <!-- HEADER: SOLO CUANDO ESTÁ LOGUEADO -->
-  <header class="page-header" *ngIf="auth.isLoggedIn()">
-
-    <!-- Toggle tema -->
-    <button
+  <button
       class="theme-floating"
       type="button"
       (click)="toggleTheme()"
@@ -12,6 +6,13 @@
     >
       {{ theme() === 'dark' ? '☀️' : '🌙' }}
     </button>
+<div class="page">
+
+  <!-- HEADER: SOLO CUANDO ESTÁ LOGUEADO -->
+  <header class="page-header" *ngIf="auth.isLoggedIn()">
+
+    <!-- Toggle tema -->
+
 
     <div class="brand">
       <img class="title-logo" src="./assets/icons/smart-logo.png" />

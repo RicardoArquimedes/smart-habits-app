@@ -31,33 +31,31 @@ export class AuthService {
     }
   }
 
-  initGoogle(buttonId: string) {
-    const g = (window as any).google;
-    if (!g?.accounts?.id) return;
+ initGoogle(callback: (credential: string) => void) {
+    if (!google?.accounts?.id) return;
 
-    g.accounts.id.initialize({
+    google.accounts.id.initialize({
       client_id: environment.GOOGLE_CLIENT_ID,
       callback: (response: any) => {
-        const token = response.credential;
-        const user = this.decodeJwt(token);
-
-        this._token.set(token);
-        this._user.set(user);
-
-        // 🔥 PERSISTIR SESIÓN
-        sessionStorage.setItem('auth_token', token);
-        sessionStorage.setItem('auth_user', JSON.stringify(user));
+        this.login(response.credential);
+        callback(response.credential);
       },
     });
+  }
 
-    const el = document.getElementById(buttonId);
-    if (!el) return;
-
-    g.accounts.id.renderButton(el, {
+  renderButton(container: HTMLElement) {
+    google.accounts.id.renderButton(container, {
       theme: 'outline',
       size: 'large',
       shape: 'pill',
+      text: 'signin_with',
     });
+  }
+
+  login(token: string) {
+    sessionStorage.setItem('auth_token', token);
+    this._token.set(token);
+    this._user.set(this.decodeJwt(token));
   }
 
   logout() {
