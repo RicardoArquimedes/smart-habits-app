@@ -1,8 +1,8 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
+import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import { Habit } from '../../../core/models/habit.model';
 import { HabitFilter } from '../../../core/models/habit-filter.model';
-
-const STORAGE_KEY = 'smart-habits';
+import { HabitsApi } from '../../../app/features/habits/api/habits.api';
+import { HabitApiResponse } from '../../../core/models/habit-api-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class HabitsStore {
   // =========================
   // Estado principal (privado)
   // =========================
-  private readonly _habits = signal<Habit[]>(this.loadFromStorage());
+  private readonly _habits = signal<Habit[]>([]);
 
   // =========================
   // Estado público (lectura)
@@ -38,6 +38,13 @@ export class HabitsStore {
   readonly completedHabits = computed(
     () => this._habits().filter((h) => h.completed).length,
   );
+
+  // =========================
+// Estado de sincronización (API)
+// =========================
+readonly isSyncing = signal(false);
+readonly lastSyncAt = signal<Date | null>(null);
+private api = inject(HabitsApi);
 
   readonly filteredHabits = computed(() => {
     const habits = this._habits();
@@ -56,49 +63,104 @@ export class HabitsStore {
   });
 
   constructor() {
-    // Persistencia automática
-    effect(() => {
-      const habits = this._habits();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
-    });
+
+
+  // 🔌 Auto-sync cuando haya usuario autenticado
+  effect(() => {
+    if (this.userId() && this.authToken()) {
+      this.syncToApi();
+    }
+  });
   }
 
   // =========================
   // Acciones
   // =========================
-  addHabit(habitOrTitle: Habit | string) {
-    const habit =
-      typeof habitOrTitle === 'string'
-        ? {
-            id: crypto.randomUUID(),
-            title: habitOrTitle,
-            createdAt: new Date(),
-            completed: false,
-            date: this.selectedDate(),
-          }
-        : habitOrTitle;
+addHabit(dto: any) {
+  const title = dto.title.trim();
+  if (!title) return;
 
-    this._habits.update((h) => [...h, habit]);
-  }
+  this.api.createHabit({
+    title,
+    date: dto.date,
+  }).subscribe({
+    next: created => {
+      this._habits.update(h => [
+        ...h,
+        {
+          id: created.habitId,      // 👈 CLAVE
+          title: created.title,
+          completed: created.completed,
+          date: created.date,
+          createdAt: new Date(created.createdAt),
+        },
+      ]);
+    },
+    error: err => {
+      console.error('Error creating habit', err);
+    },
+  });
+}
 
-  toggleHabit(id: string) {
-    this._habits.update((habits) =>
-      habits.map((h) => (h.id === id ? { ...h, completed: !h.completed } : h)),
-    );
-  }
 
-  editHabit(id: string, newTitle: string) {
-    const title = newTitle.trim();
-    if (!title) return;
+toggleHabit(id: string) {
+  const habit = this._habits().find(h => h.id === id);
+  if (!habit) return;
 
-    this._habits.update((habits) =>
-      habits.map((habit) => (habit.id === id ? { ...habit, title } : habit)),
-    );
-  }
+  const completed = !habit.completed;
 
-  deleteHabit(id: string) {
-    this._habits.update((habits) => habits.filter((habit) => habit.id !== id));
-  }
+  this.api.updateHabit(id, { completed }).subscribe({
+    next: () => {
+      this._habits.update(habits =>
+        habits.map(h =>
+          h.id === id ? { ...h, completed } : h
+        )
+      );
+    },
+    error: err => {
+      console.error('Error toggling habit', err);
+    },
+  });
+}
+
+
+
+editHabit(id: string, newTitle: string) {
+  const title = newTitle.trim();
+  if (!title) return;
+
+  this.api.updateHabit(id, { title }).subscribe({
+    next: () => {
+      this._habits.update(habits =>
+        habits.map(h =>
+          h.id === id ? { ...h, title } : h
+        )
+      );
+    },
+    error: err => {
+      console.error('Error updating habit', err);
+    },
+  });
+}
+
+
+
+deleteHabit(id: string) {
+  console.log("el id", id)
+  this.api.deleteHabit(id).subscribe({
+    next: () => {
+      this._habits.update(habits =>
+        habits.filter(h => h.id !== id)
+      );
+    },
+    error: err => {
+      console.error('Error deleting habit', err);
+    },
+  });
+}
+
+
+
 
   // =========================
   // Helpers privados
@@ -112,22 +174,7 @@ export class HabitsStore {
     return date.toISOString().slice(0, 10);
   }
 
-  private loadFromStorage(): Habit[] {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
 
-    try {
-      const parsed = JSON.parse(raw) as Habit[];
-
-      // Opcional: normalizar fechas si las usas luego
-      return parsed.map((h) => ({
-        ...h,
-        createdAt: new Date(h.createdAt),
-      }));
-    } catch {
-      return [];
-    }
-  }
 
   readonly pendingHabits = computed(
     () => this.totalHabits() - this.completedHabits(),
@@ -215,4 +262,56 @@ calendarDays = computed(() => {
   habitsForSelectedDay = computed(() =>
     this.habits().filter((h) => h.date === this.selectedDate()),
   );
+
+  // =========================
+// Auth (Google / JWT)
+// =========================
+readonly userId = signal<string | null>(null);
+readonly authToken = signal<string | null>(null);
+
+setAuth(userId: string, token: string) {
+  this.userId.set(userId);
+  this.authToken.set(token);
+}
+
+clearAuth() {
+  this.userId.set(null);
+  this.authToken.set(null);
+}
+
+// =========================
+// API Sync (placeholder)
+// =========================
+syncFromApi() {
+  // FUTURO:
+  // 1. Llamar API Gateway
+  // 2. Obtener hábitos del usuario
+  // 3. this._habits.set(response)
+  this.lastSyncAt.set(new Date());
+}
+
+syncToApi() {
+  // FUTURO:
+  // 1. Enviar this._habits()
+  // 2. Guardar en DynamoDB
+}
+
+loadFromBackend() {
+  this.api.getHabits().subscribe({
+    next: (habits: HabitApiResponse[]) => {
+      this._habits.set(
+        habits.map(h => ({
+          id: h.habitId, // ✅ MAPEO CLAVE
+          title: h.title,
+          completed: h.completed,
+          date: h.date,
+          createdAt: new Date(h.createdAt),
+        }))
+      );
+    },
+    error: err => console.error(err),
+  });
+}
+
+
 }

@@ -1,36 +1,43 @@
 <div class="page">
-<header class="page-header">
+  <!-- HEADER: SIEMPRE visible -->
+ <header class="page-header">
   <div class="brand">
-    <img
-      class="title-logo"
-      src="./assets/icons/smart-logo.png"
-      alt="Smart Habits logo"
-    />
+    <img class="title-logo" src="./assets/icons/smart-logo.png" />
     <h1>Smart Habits</h1>
   </div>
 
-  <button
-    type="button"
-    class="theme-toggle"
-    (click)="toggleTheme()"
-    aria-label="Toggle dark mode"
-  >
-    {{ theme() === 'dark' ? '☀️' : '🌙' }}
-  </button>
+  <div class="actions">
+    @if (auth.isLoggedIn()) {
+      <button
+        type="button"
+        class="ghost"
+        (click)="auth.logout()"
+        aria-label="Logout"
+      >
+        ⎋ Logout
+      </button>
+    }
+
+    <button
+      type="button"
+      class="theme-toggle"
+      (click)="toggleTheme()"
+    >
+      {{ theme() === 'dark' ? '☀️' : '🌙' }}
+    </button>
+  </div>
 </header>
 
-  <main>
-    <section aria-labelledby="add-habit-title">
-      <h2 id="add-habit-title" class="sr-only">Add new habit</h2>
 
+  <!-- CONTENIDO SOLO SI ESTÁ LOGUEADO -->
+  <main *ngIf="auth.isLoggedIn(); else login">
+    <section>
       <app-habit-form
         (createHabit)="store.addHabit($event)">
       </app-habit-form>
     </section>
 
-    <section aria-labelledby="stats-title">
-      <h2 id="stats-title" class="sr-only">Habits statistics</h2>
-
+    <section>
       <app-habit-stats
         [total]="store.totalHabits()"
         [completed]="store.completedHabits()"
@@ -39,46 +46,42 @@
       </app-habit-stats>
     </section>
 
-    <section aria-labelledby="filters-title">
-      <h2 id="filters-title" class="sr-only">Filter habits</h2>
-
+    <section>
       <app-habit-filters
         [current]="store.filter()"
         (change)="store.setFilter($event)">
       </app-habit-filters>
     </section>
 
-    <section aria-labelledby="calendar-title">
-  <h2 id="calendar-title" class="sr-only">Calendar</h2>
+    <section>
+      <app-calendar-grid
+        [days]="store.calendarDays()"
+        (selectDay)="store.selectDate($event)">
+      </app-calendar-grid>
+    </section>
 
-  <app-calendar-grid
-    [days]="store.calendarDays()"
-    (selectDay)="store.selectDate($event)">
-  </app-calendar-grid>
-</section>
-
-
-    <section aria-labelledby="list-title">
-      <h2 id="list-title" class="sr-only">Habits list</h2>
-
- <app-habit-list
-  *ngIf="store.hasFilteredResults(); else emptyState"
-[habits]="store.habitsForSelectedDay()"
-  (toggleHabit)="store.toggleHabit($event)"
-  (editHabit)="store.editHabit($event.id, $event.title)"
-  (deleteHabit)="store.deleteHabit($event)">
-</app-habit-list>
-
+    <section>
+      <app-habit-list
+        *ngIf="store.hasFilteredResults(); else emptyState"
+        [habits]="store.habitsForSelectedDay()"
+        (toggleHabit)="store.toggleHabit($event)"
+        (editHabit)="store.editHabit($event.id, $event.title)"
+        (deleteHabit)="store.deleteHabit($event)">
+      </app-habit-list>
 
       <ng-template #emptyState>
-        <p class="empty" role="status" aria-live="polite">
-          {{
-            store.hasHabits()
-              ? 'No habits match this filter.'
-              : 'You don’t have habits yet. Start by adding one ✨'
-          }}
+        <p class="empty">
+          No habits yet. Start by adding one ✨
         </p>
       </ng-template>
     </section>
   </main>
+
+  <!-- LOGIN VIEW -->
+  <ng-template #login>
+    <section class="login-container">
+      <h2>Sign in</h2>
+      <div id="google-btn"></div>
+    </section>
+  </ng-template>
 </div>

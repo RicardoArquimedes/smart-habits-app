@@ -1,66 +1,89 @@
 .calendar-grid {
-   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: var(--space-2);
+  display: grid;
+  gap: var(--space-3);
+
+  /* Mobile first */
+  grid-template-columns: repeat(2, 1fr);
 }
-
-
-.day-card {
-  width: 100%;
-  min-height: 72px;
-  padding: var(--space-2);
-  opacity: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  border-radius: var(--radius-md);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-
-  color: var(--color-text-primary);
-
-  overflow: hidden; /* 🔑 evita que crezca */
-
-  &:hover {
-    border-color: var(--color-primary);
-  }
-
-  &.outside {
-    opacity: 0.4;
-  }
-}
-
-
-.day-card:has(.stats) {
-  opacity: 1;
-}
-
-.day-card:not(:has(.stats)) {
-  opacity: 0.35;
-  pointer-events: none;
-}
-
-
-.tasks-preview {
-  margin-top: var(--space-2);
-  padding: 0;
-  list-style: none;
-
-  li {
-    font-size: var(--font-sm);
-    color: var(--color-text-secondary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
 
 /* Tablet */
 @media (min-width: 640px) {
-  .day-card {
-    min-height: 96px;
-    padding: var(--space-3);
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* =========================
+   Day card
+   ========================= */
+
+.day-card {
+  aspect-ratio: 1 / 1.1;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.day-card:hover {
+  background-color: var(--color-primary-soft);
+  transform: translateY(-1px);
+}
+
+/* Days outside current month */
+.day-card.outside {
+  opacity: 0.35;
+}
+
+/* =========================
+   Header (day number)
+   ========================= */
+
+.day-card header {
+  font-weight: 600;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+/* =========================
+   Stats (completed / total)
+   ========================= */
+
+.stats {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* =========================
+   Task title preview
+   ========================= */
+
+.task-title {
+  font-size: var(--font-sm);
+  color: var(--color-text-primary);
+  line-height: 1.3;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

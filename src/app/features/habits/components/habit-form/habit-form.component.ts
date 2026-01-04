@@ -14,21 +14,19 @@ export class HabitFormComponent {
   date = signal(this.today());
 
   // OUTPUT: aviso que se quiere crear un hábito
-  createHabit = output<Habit>();
-  submit() {
-    const value = this.title().trim();
-    if (!value) return;
+  createHabit = output<any>();
+submit() {
+  const title = this.title().trim();
+  if (!title) return;
 
-    this.createHabit.emit({
-      id: crypto.randomUUID(),
-      title: value,
-      completed: false,
-      date: this.date(),
-      createdAt: new Date(),
-    });
+  this.createHabit.emit({
+    title,
+    date: this.date(),
+  });
 
-    this.title.set('');
-  }
+  this.title.set('');
+}
+
 
   onDate(e: Event) {
     this.date.set((e.target as HTMLInputElement).value);
