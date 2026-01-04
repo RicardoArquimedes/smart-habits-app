@@ -167,3 +167,52 @@ section {
   color: var(--color-text-primary);
   border: 1px solid var(--color-text-primary);
 }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 1px solid var(--border-color);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.user-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.user-meta button {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+}
+
+.user-meta button:hover {
+  opacity: 1;
+  border: revert;
+}

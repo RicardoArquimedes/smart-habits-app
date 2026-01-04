@@ -17,14 +17,27 @@
   </div>
 
   <div class="actions">
+<div class="user-info">
+
+
+  <div class="user-meta">
+
     <button
       type="button"
       class="ghost"
       (click)="auth.logout()"
-      aria-label="Logout"
     >
-     Logout ⎋
+      ⎋ Logout
     </button>
+  </div>
+    <img
+    class="avatar"
+    [src]="auth.user()?.picture"
+    alt="User avatar"
+    referrerpolicy="no-referrer"
+  />
+</div>
+
   </div>
 </header>
 

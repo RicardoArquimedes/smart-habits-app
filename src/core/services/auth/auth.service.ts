@@ -12,10 +12,11 @@ export interface GoogleUser {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly _user = signal<any | null>(null);
+  private readonly _user = signal<GoogleUser | null>(null);
+  readonly user = computed(() => this._user());
+
   private readonly _token = signal<string | null>(null);
 
-  readonly user = computed(() => this._user());
   readonly token = computed(() => this._token());
   readonly isLoggedIn = computed(() => !!this._token());
 
@@ -72,6 +73,13 @@ export class AuthService {
 
   private decodeJwt(token: string) {
     const base64 = token.split('.')[1];
-    return JSON.parse(atob(base64));
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join(''),
+    );
+
+    return JSON.parse(jsonPayload);
   }
 }
