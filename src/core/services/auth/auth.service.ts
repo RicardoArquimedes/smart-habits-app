@@ -16,12 +16,11 @@ export class AuthService {
   readonly user = computed(() => this._user());
 
   private readonly _token = signal<string | null>(null);
-
   readonly token = computed(() => this._token());
   readonly isLoggedIn = computed(() => !!this._token());
 
   constructor() {
-    // 🔥 RESTAURAR SESIÓN AL CARGAR APP
+    // ✅ RESTAURAR SESIÓN AL CARGAR APP
     const storedToken = sessionStorage.getItem('auth_token');
     const storedUser = sessionStorage.getItem('auth_user');
 
@@ -31,7 +30,7 @@ export class AuthService {
     }
   }
 
- initGoogle(callback: (credential: string) => void) {
+  initGoogle(callback: (credential: string) => void) {
     if (!google?.accounts?.id) return;
 
     google.accounts.id.initialize({
@@ -53,9 +52,14 @@ export class AuthService {
   }
 
   login(token: string) {
+    const user = this.decodeJwt(token);
+
+    // ✅ GUARDAR AMBOS
     sessionStorage.setItem('auth_token', token);
+    sessionStorage.setItem('auth_user', JSON.stringify(user));
+
     this._token.set(token);
-    this._user.set(this.decodeJwt(token));
+    this._user.set(user);
   }
 
   logout() {
@@ -69,13 +73,13 @@ export class AuthService {
     g?.accounts?.id?.disableAutoSelect?.();
   }
 
-  private decodeJwt(token: string) {
+  private decodeJwt(token: string): GoogleUser {
     const base64 = token.split('.')[1];
     const jsonPayload = decodeURIComponent(
       atob(base64)
         .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join(''),
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
     );
 
     return JSON.parse(jsonPayload);
