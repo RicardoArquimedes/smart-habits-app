@@ -4,5 +4,5 @@ export interface CalendarDay {
   inMonth: boolean;
   total: number;
   completed: number;
-  titles: string[]; // 👈 NUEVO
+  titles?: string[]; // 👈 NUEVO
 }

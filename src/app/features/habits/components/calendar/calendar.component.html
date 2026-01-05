@@ -46,13 +46,27 @@
         [class.selected]="d.key === store.selectedDate()"
         (click)="store.selectDate(d.key)"
       >
-        <span class="day-number">{{ d.day }}</span>
 
-        @if (d.total > 0) {
-          <span class="badge">
-            {{ d.completed }}/{{ d.total }}
-          </span>
+        <!-- Day header -->
+        <div class="day-header">
+          <span class="day-number">{{ d.day }}</span>
+
+          @if (d.total > 0) {
+            <span class="badge">
+              {{ d.completed }}/{{ d.total }}
+            </span>
+          }
+        </div>
+
+        <!-- Tasks preview -->
+        @if (d.titles.length > 0) {
+          <ul class="day-tasks">
+            @for (title of d.titles; track title) {
+              <li>{{ title }}</li>
+            }
+          </ul>
         }
+
       </button>
     }
   </div>

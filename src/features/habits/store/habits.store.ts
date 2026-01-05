@@ -215,12 +215,18 @@ export class HabitsStore {
     return filter === 'all' ? days : days.filter((day) => day.total > 0);
   });
 
-  monthLabel = computed(() => {
-    return this.currentMonth().toLocaleDateString(undefined, {
+ monthLabel = computed(() => {
+  return this.currentMonth()
+    .toLocaleDateString('es-ES', {
       month: 'long',
       year: 'numeric',
-    });
-  });
+    })
+    .replace(' de ', ' ')
+    .replace(/^\w/, c => c.toUpperCase());
+});
+
+
+
 
   nextMonth() {
     const d = new Date(this.currentMonth());
@@ -238,9 +244,12 @@ export class HabitsStore {
     this.selectedDate.set(date);
   }
 
-  habitsForSelectedDay = computed(() =>
-    this.habits().filter((h) => h.date === this.selectedDate()),
-  );
+ habitsForSelectedDay = computed(() =>
+  this._habits().filter(
+    h => h.date === this.selectedDate()
+  )
+);
+
 
   // =========================
   // Auth (Google / JWT)

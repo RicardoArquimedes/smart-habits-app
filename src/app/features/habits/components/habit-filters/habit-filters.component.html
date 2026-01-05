@@ -3,19 +3,19 @@
   [class.active]="current === 'all'"
   [attr.aria-pressed]="current === 'all'"
   (click)="select('all')">
-  All
+  Todo
 </button>
 
 
   <button
     [class.active]="current === 'completed'"
     (click)="select('completed')">
-    Completed
+    Completado
   </button>
 
   <button
     [class.active]="current === 'pending'"
     (click)="select('pending')">
-    Pending
+    Pendiente
   </button>
 </div>

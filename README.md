@@ -8,7 +8,7 @@ Smart Habits es una aplicación web moderna para gestionar hábitos diarios, con
 
 - ✅ Crear y completar hábitos
 - 📊 Estadísticas en tiempo real (Total, Completed, Pending, Progress)
-- 🔍 Filtros: All / Completed / Pending
+- 🔍 Filtros: Todo / Completado / Pendiente
 - 🌗 Light & Dark mode con persistencia
 - 💾 Persistencia en LocalStorage
 - ♿ Accesibilidad (ARIA, semantic HTML)
