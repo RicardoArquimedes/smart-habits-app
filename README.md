@@ -1,6 +1,9 @@
 # Smart Habits 🧠✨
 
-![Login](./src/assets/screenshots/login.png)
+<p align="center">
+  <img src="./src/assets/screenshots/login.png" width="700" />
+</p>
+
 
 Smart Habits es una aplicación web moderna para gestionar hábitos diarios, construida con **Angular (standalone + signals)** y enfocada en **arquitectura limpia, accesibilidad y diseño adaptable (Light / Dark mode)**.
 
