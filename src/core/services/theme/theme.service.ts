@@ -12,7 +12,7 @@ export class ThemeService {
 
   init() {
     const stored = localStorage.getItem('theme') as Theme | null;
-    const theme = stored ?? 'light';
+    const theme = stored ?? 'dark';
 
     this.setTheme(theme);
   }
