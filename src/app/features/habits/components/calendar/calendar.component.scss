@@ -78,7 +78,6 @@
   color: var(--color-text-primary);
 }
 
-
 button.ghost {
   background: transparent;
   border: none;
@@ -86,7 +85,6 @@ button.ghost {
   cursor: pointer;
   font-size: 18px;
 }
-
 
 .day {
   display: flex;
@@ -119,11 +117,10 @@ button.ghost {
 }
 
 @media (max-width: 639px) {
-
   .weekdays {
     display: none;
   }
-  
+
   .days-grid {
     grid-template-columns: repeat(2, 1fr); // 🔥 NO 7 columnas
     gap: 8px;
@@ -157,7 +154,6 @@ button.ghost {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 
 @media (hover: hover) {
   .day:hover {

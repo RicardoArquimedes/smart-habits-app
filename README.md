@@ -1,18 +1,26 @@
 # Smart Habits 🧠✨
 
+![Login](./assets/screenshots/login.png)
+
 Smart Habits es una aplicación web moderna para gestionar hábitos diarios, construida con **Angular (standalone + signals)** y enfocada en **arquitectura limpia, accesibilidad y diseño adaptable (Light / Dark mode)**.
 
 ---
 
 ## 🚀 Features
-
+![Loader](./assets/screenshots/loader.png)
 - ✅ Crear y completar hábitos
+![Create](./assets/screenshots/create.png)
 - 📊 Estadísticas en tiempo real (Total, Completed, Pending, Progress)
+![Stats](./assets/screenshots/stats.png)
 - 🔍 Filtros: Todo / Completado / Pendiente
+![Calendar](./assets/screenshots/calendar.png)
 - 🌗 Light & Dark mode con persistencia
-- 💾 Persistencia en LocalStorage
-- ♿ Accesibilidad (ARIA, semantic HTML)
+![Light](./assets/screenshots/mobile-light.png)
+- 💾 Persistencia de datos 
+- ♿ Accesibilidad (ARIA, semantic HTML) y diseño responsive
 - 🧱 Arquitectura escalable y desacoplada
+![Edit](./assets/screenshots/edit.png)
+![Complete](./assets/screenshots/complete.png)
 
 ---
 
@@ -55,3 +63,19 @@ src/
 │
 ├── styles.css
 └── main.ts
+```
+## ▶️ Ejecucción proyecto 
+
+**Requisitos**
+
+- Node.js 18 o superior
+- Angular CLI 19 o superior
+- npm install -g @angular/cli
+
+**Instalación**
+- npm install
+- Ejecutar en desarrollo
+- ng serve
+
+- Abrir en el navegador: http://localhost:6200
+

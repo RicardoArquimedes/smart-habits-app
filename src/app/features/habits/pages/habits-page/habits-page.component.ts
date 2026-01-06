@@ -18,7 +18,7 @@ import { CalendarComponent } from '../../components/calendar/calendar.component'
     HabitListComponent,
     HabitStatsComponent,
     HabitFiltersComponent,
-    CalendarComponent
+    CalendarComponent,
   ],
   templateUrl: './habits-page.component.html',
   styleUrl: './habits-page.component.scss',
@@ -27,16 +27,11 @@ export class HabitsPageComponent implements AfterViewInit {
   readonly store = inject(HabitsStore);
   readonly auth = inject(AuthService);
   private readonly themeService = inject(ThemeService);
-private googleInitialized = false;
+  private googleInitialized = false;
   readonly theme = this.themeService.theme;
 
   constructor() {
-
-
-
     effect(() => {
-
-
       if (this.auth.user() && this.auth.token()) {
         this.store.setAuth(this.auth.user()!.sub, this.auth.token()!);
         this.store.loadFromBackend();
@@ -44,7 +39,7 @@ private googleInitialized = false;
     });
   }
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     if (!this.googleInitialized) {
       this.googleInitialized = true;
     }

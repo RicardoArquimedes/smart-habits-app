@@ -3,7 +3,6 @@ import { HabitsPageComponent } from './features/habits/pages/habits-page/habits-
 import { LoginComponent } from '../features/auth/login/login.component';
 import { authGuard } from '../core/guards/auth-guard/auth.guard';
 
-
 export const routes: Routes = [
   {
     path: 'login',

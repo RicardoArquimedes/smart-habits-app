@@ -9,7 +9,7 @@ import { HabitApiResponse } from '../../../core/models/habit-api-response.model'
 })
 export class HabitsStore {
   private readonly _filter = signal<HabitFilter>('all');
-readonly isLoading = signal(true);
+  readonly isLoading = signal(true);
 
   readonly filter = computed(() => this._filter());
   readonly hasHabits = computed(() => this.totalHabits() > 0);
@@ -63,9 +63,7 @@ readonly isLoading = signal(true);
     }
   });
 
-  constructor() {
-
-  }
+  constructor() {}
 
   // =========================
   // Acciones
@@ -211,18 +209,15 @@ readonly isLoading = signal(true);
     return filter === 'all' ? days : days.filter((day) => day.total > 0);
   });
 
- monthLabel = computed(() => {
-  return this.currentMonth()
-    .toLocaleDateString('es-ES', {
-      month: 'long',
-      year: 'numeric',
-    })
-    .replace(' de ', ' ')
-    .replace(/^\w/, c => c.toUpperCase());
-});
-
-
-
+  monthLabel = computed(() => {
+    return this.currentMonth()
+      .toLocaleDateString('es-ES', {
+        month: 'long',
+        year: 'numeric',
+      })
+      .replace(' de ', ' ')
+      .replace(/^\w/, (c) => c.toUpperCase());
+  });
 
   nextMonth() {
     const d = new Date(this.currentMonth());
@@ -240,12 +235,9 @@ readonly isLoading = signal(true);
     this.selectedDate.set(date);
   }
 
- habitsForSelectedDay = computed(() =>
-  this._habits().filter(
-    h => h.date === this.selectedDate()
-  )
-);
-
+  habitsForSelectedDay = computed(() =>
+    this._habits().filter((h) => h.date === this.selectedDate()),
+  );
 
   // =========================
   // Auth (Google / JWT)
@@ -267,28 +259,26 @@ readonly isLoading = signal(true);
   // API Sync (placeholder)
   // =========================
 
+  loadFromBackend() {
+    this.isLoading.set(true);
 
-loadFromBackend() {
-  this.isLoading.set(true);
-
-  this.api.getHabits().subscribe({
-    next: (habits: HabitApiResponse[]) => {
-      this._habits.set(
-        habits.map((h) => ({
-          id: h.habitId,
-          title: h.title,
-          completed: h.completed,
-          date: h.date,
-          createdAt: new Date(h.createdAt),
-        }))
-      );
-      this.isLoading.set(false);
-    },
-    error: (err) => {
-      console.error(err);
-      this.isLoading.set(false);
-    },
-  });
-}
-
+    this.api.getHabits().subscribe({
+      next: (habits: HabitApiResponse[]) => {
+        this._habits.set(
+          habits.map((h) => ({
+            id: h.habitId,
+            title: h.title,
+            completed: h.completed,
+            date: h.date,
+            createdAt: new Date(h.createdAt),
+          })),
+        );
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      },
+    });
+  }
 }
