@@ -7,6 +7,8 @@ form {
 }
 
 input {
+    min-width: 0;
+  width: 100%;
   font-family: "DM Sans", system-ui, sans-serif;
   flex: 1;
   padding: 0.6rem 0.75rem;
@@ -58,6 +60,7 @@ button:hover {
     grid-template-columns: 1fr auto auto;
     align-items: end;
   }
+
 
   .form button {
     grid-column: auto;
