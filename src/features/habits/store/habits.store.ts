@@ -9,6 +9,7 @@ import { HabitApiResponse } from '../../../core/models/habit-api-response.model'
 })
 export class HabitsStore {
   private readonly _filter = signal<HabitFilter>('all');
+readonly isLoading = signal(true);
 
   readonly filter = computed(() => this._filter());
   readonly hasHabits = computed(() => this.totalHabits() > 0);
@@ -63,12 +64,7 @@ export class HabitsStore {
   });
 
   constructor() {
-    // 🔌 Auto-sync cuando haya usuario autenticado
-    effect(() => {
-      if (this.userId() && this.authToken()) {
-        this.syncToApi();
-      }
-    });
+
   }
 
   // =========================
@@ -270,34 +266,29 @@ export class HabitsStore {
   // =========================
   // API Sync (placeholder)
   // =========================
-  syncFromApi() {
-    // FUTURO:
-    // 1. Llamar API Gateway
-    // 2. Obtener hábitos del usuario
-    // 3. this._habits.set(response)
-    this.lastSyncAt.set(new Date());
-  }
 
-  syncToApi() {
-    // FUTURO:
-    // 1. Enviar this._habits()
-    // 2. Guardar en DynamoDB
-  }
 
-  loadFromBackend() {
-    this.api.getHabits().subscribe({
-      next: (habits: HabitApiResponse[]) => {
-        this._habits.set(
-          habits.map((h) => ({
-            id: h.habitId, // ✅ MAPEO CLAVE
-            title: h.title,
-            completed: h.completed,
-            date: h.date,
-            createdAt: new Date(h.createdAt),
-          })),
-        );
-      },
-      error: (err) => console.error(err),
-    });
-  }
+loadFromBackend() {
+  this.isLoading.set(true);
+
+  this.api.getHabits().subscribe({
+    next: (habits: HabitApiResponse[]) => {
+      this._habits.set(
+        habits.map((h) => ({
+          id: h.habitId,
+          title: h.title,
+          completed: h.completed,
+          date: h.date,
+          createdAt: new Date(h.createdAt),
+        }))
+      );
+      this.isLoading.set(false);
+    },
+    error: (err) => {
+      console.error(err);
+      this.isLoading.set(false);
+    },
+  });
+}
+
 }
