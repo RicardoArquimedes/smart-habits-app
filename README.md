@@ -1,26 +1,40 @@
 # Smart Habits 🧠✨
 
-![Login](./assets/screenshots/login.png)
+![Login](./src/assets/screenshots/login.png)
 
 Smart Habits es una aplicación web moderna para gestionar hábitos diarios, construida con **Angular (standalone + signals)** y enfocada en **arquitectura limpia, accesibilidad y diseño adaptable (Light / Dark mode)**.
 
 ---
 
 ## 🚀 Features
-![Loader](assets/screenshots/loader.png)
-- ✅ Crear y completar hábitos
-![Create](./assets/screenshots/create.png)
-- 📊 Estadísticas en tiempo real (Total, Completed, Pending, Progress)
-![Stats](./assets/screenshots/stats.png)
-- 🔍 Filtros: Todo / Completado / Pendiente
-![Calendar](./assets/screenshots/calendar.png)
-- 🌗 Light & Dark mode con persistencia
-![Light](./assets/screenshots/mobile-light.png)
+
+### Crear y completar hábitos
+<p align="center">
+  <img src="./src/assets/screenshots/create.png" width="700" />
+</p>
+
+### Estadísticas en tiempo real
+<p align="center">
+  <img src="./src/assets/screenshots/stats.png" width="700" />
+</p>
+
+### Filtros y calendario
+<p align="center">
+  <img src="./src/assets/screenshots/calendar.png" width="700" />
+</p>
+
+### Light & Dark mode
+<p align="center">
+  <img src="./src/assets/screenshots/mobile-light.png" width="350" />
+</p>
+
+
 - 💾 Persistencia de datos 
 - ♿ Accesibilidad (ARIA, semantic HTML) y diseño responsive
 - 🧱 Arquitectura escalable y desacoplada
-![Edit](./assets/screenshots/edit.png)
-![Complete](./assets/screenshots/complete.png)
+
+![Edit](./src/assets/screenshots/edit.png)
+![Complete](./src/assets/screenshots/complete.png)
 
 ---
 
