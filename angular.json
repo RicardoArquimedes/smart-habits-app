@@ -37,6 +37,7 @@
           },
           "configurations": {
             "production": {
+              
                 "baseHref": "/smart-habits-app/",
               "budgets": [
                 {
@@ -67,6 +68,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
+
               "buildTarget": "smart-habits-app:build:production"
             },
             "development": {
