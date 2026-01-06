@@ -94,9 +94,19 @@
       </app-habit-filters>
     </section>
 
-    <section>
-      <app-calendar></app-calendar>
-    </section>
+<section>
+  <ng-container *ngIf="!store.isLoading(); else loadingCalendar">
+    <app-calendar></app-calendar>
+  </ng-container>
+
+  <ng-template #loadingCalendar>
+    <div class="calendar-loading">
+      <span class="hourglass">⏳</span>
+      <span>Cargando calendario…</span>
+    </div>
+  </ng-template>
+</section>
+
 
     <section>
       <app-habit-list
